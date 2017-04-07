@@ -1,0 +1,30 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/translate_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="14dp"
+    android:weightSum="10"
+    tools:context="com.aminbenarieb.yandextask.HomeTranslateFragment"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/translate_source"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:textColor="@android:color/black"
+        android:gravity="center"
+        tools:text="Hello"
+        />
+    <TextView
+        android:id="@+id/translate_result"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="7"
+        android:textColor="@android:color/black"
+        android:gravity="center"
+        tools:text="Здравствуйте"
+        />
+
+</LinearLayout>

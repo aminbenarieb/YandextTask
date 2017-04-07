@@ -5,26 +5,37 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView mTextMessage;
+    private static final String TAG = MainActivity.class.getSimpleName();
+    private BottomNavigationView bottomNavigation;
+    private Fragment mHomeTranslateFragment = new HomeTranslateFragment();
+    private Fragment mBookmarksFragment = new BookmarksFragment();
+    private FragmentManager fragmentManager;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
+            int id = item.getItemId();
+            Fragment fragment = null;
+            switch (id) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
-                    return true;
+                    fragment = mHomeTranslateFragment;
+                    break;
                 case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
-                    return true;
+                    fragment = mBookmarksFragment;
+                    break;
             }
-            return false;
+
+            final FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.content, fragment).commit();
+            return true;
         }
 
     };
@@ -34,9 +45,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTextMessage = (TextView) findViewById(R.id.message);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        // Setting up bottom navigation
+        bottomNavigation = (BottomNavigationView) findViewById(R.id.navigation);
+        bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        // Init fragment manager
+        fragmentManager = getSupportFragmentManager();
+
+        // Set initial fragment
+        setContentFragment(mHomeTranslateFragment);
+
     }
 
+    void setContentFragment(Fragment fragmentReplaceWith) {
+        final FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.content, fragmentReplaceWith).commit();
+    }
 }

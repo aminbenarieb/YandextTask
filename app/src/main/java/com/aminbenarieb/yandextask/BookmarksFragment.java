@@ -19,7 +19,7 @@ public class BookmarksFragment extends Fragment {
     private static final String TAG = "RecyclerViewFragment";
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
     private static final int SPAN_COUNT = 2;
-    private static final int DATASET_COUNT = 60;
+    private static final int DATASET_COUNT = 10;
 
     private enum LayoutManagerType {
         GRID_LAYOUT_MANAGER,
@@ -28,13 +28,10 @@ public class BookmarksFragment extends Fragment {
 
     protected LayoutManagerType mCurrentLayoutManagerType;
 
-    protected RadioButton mLinearLayoutRadioButton;
-    protected RadioButton mGridLayoutRadioButton;
-
     protected RecyclerView mRecyclerView;
-    protected CustomAdapter mAdapter;
+    protected BookmarksAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
-    protected String[] mDataset;
+    protected Word[] mDataset;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,8 +64,8 @@ public class BookmarksFragment extends Fragment {
         }
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
 
-        mAdapter = new CustomAdapter(mDataset);
-        // Set CustomAdapter as the adapter for RecyclerView.
+        mAdapter = new BookmarksAdapter(mDataset);
+        // Set BookmarksAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
 
         return rootView;
@@ -118,9 +115,9 @@ public class BookmarksFragment extends Fragment {
      * from a local content provider or remote server.
      */
     private void initDataset() {
-        mDataset = new String[DATASET_COUNT];
+        mDataset = new Word[DATASET_COUNT];
         for (int i = 0; i < DATASET_COUNT; i++) {
-            mDataset[i] = "This is element #" + i;
+            mDataset[i] = new Word("Source #" + i, "Translate #" + i);
         }
     }
 }

@@ -6,21 +6,34 @@
     android:layout_marginTop="16dp"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
-    android:weightSum="2"
-    android:gravity="center_vertical"
-    android:orientation="vertical">
+    android:orientation="horizontal"
+    android:weightSum="10">
 
-    <TextView
-        android:id="@+id/text_source"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <LinearLayout
+        android:layout_weight="9"
+        android:layout_width="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/text_source"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Hello"/>
+        <TextView
+            android:id="@+id/text_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Здравствуйте"/>
+    </LinearLayout>
+
+    <ImageView
         android:layout_weight="1"
-        tools:text="Hello"/>
-    <TextView
-        android:id="@+id/text_result"
-        android:layout_width="match_parent"
+        android:layout_width="1dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        tools:text="Здравствуйте"/>
+        android:src="@drawable/ribon"
+        android:contentDescription="@string/bookmark"
+        android:adjustViewBounds="true"/>
+
 
 </LinearLayout>

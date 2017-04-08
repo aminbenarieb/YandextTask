@@ -2,4 +2,5 @@
     <string name="app_name">YandexTask</string>
     <string name="title_home">Перевод</string>
     <string name="title_bookmarks">Закладки</string>
+    <string name="bookmark">Bookmark</string>
 </resources>

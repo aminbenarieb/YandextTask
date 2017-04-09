@@ -1,5 +1,6 @@
 package com.aminbenarieb.yandextask;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -12,7 +13,10 @@ import android.view.View;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.aminbenarieb.yandextask.History.HistoryListFragment;
 import com.aminbenarieb.yandextask.History.HomeTranslateFragment;
@@ -22,10 +26,43 @@ public class MainActivity extends AppCompatActivity   {
     private static final String TAG = MainActivity.class.getSimpleName();
     private BottomNavigationView bottomNavigation;
     private Fragment mHomeTranslateFragment = new HomeTranslateFragment();
+    private EditText mSourceEditText;
+    private TextView mResultEditText;
     private Fragment mBookmarksFragment = new HistoryListFragment();
     private FragmentManager fragmentManager;
     private ActionBar actionBar;
 
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Setting up bottom navigation
+        bottomNavigation = (BottomNavigationView) findViewById(R.id.navigation);
+        bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        // Init fragment manager
+        fragmentManager = getSupportFragmentManager();
+
+        // Set initial fragment
+        setContentFragment(mHomeTranslateFragment);
+
+        // Setup action bar
+        setupActionBar();
+
+        // Put language switcher to action bar
+        setupLanguageSwitcher();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        showKeyboard();
+    }
+
+    //region BottomNavigation subroutines
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -51,35 +88,21 @@ public class MainActivity extends AppCompatActivity   {
 
     };
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        // Setting up bottom navigation
-        bottomNavigation = (BottomNavigationView) findViewById(R.id.navigation);
-        bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        // Init fragment manager
-        fragmentManager = getSupportFragmentManager();
-
-        // Set initial fragment
-        setContentFragment(mHomeTranslateFragment);
-
-        // Setup action bar
-        setupActionBar();
-
-        // Set language switcher to action bar
-        setupLanguageSwitcher();
-
-    }
-
     void setContentFragment(Fragment fragmentReplaceWith) {
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.content, fragmentReplaceWith).commit();
     }
 
-    // Setup action bar
+    //endregion
+
+    //region Setup subroutines
+
+    void setupEditTexts(){
+
+        mSourceEditText = (EditText) findViewById(R.id.translate_source);
+        mResultEditText = (TextView) findViewById(R.id.translate_result);
+    }
+
     void setupActionBar() {
         actionBar = getSupportActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -88,7 +111,6 @@ public class MainActivity extends AppCompatActivity   {
         actionBar.setDisplayShowCustomEnabled(true);
     }
 
-    // Language switcher in action bar
     void setupLanguageSwitcher() {
         actionBar.setCustomView(R.layout.view_language_chooser);
 
@@ -135,6 +157,13 @@ public class MainActivity extends AppCompatActivity   {
             }
         });
 
+    }
+
+    //endregion
+
+    void showKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(mSourceEditText, InputMethodManager.SHOW_IMPLICIT);
     }
 
 }

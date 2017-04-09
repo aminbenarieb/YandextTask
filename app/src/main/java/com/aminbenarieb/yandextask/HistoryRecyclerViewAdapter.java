@@ -24,8 +24,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
-public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.ViewHolder> {
-    private static final String TAG = "BookmarksAdapter";
+public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecyclerViewAdapter.ViewHolder> {
+    private static final String TAG = "HistoryRecyclerViewAdapter";
     private Word[] mDataSet;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -58,7 +58,7 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.View
      *
      * @param dataSet Word[] containing the data to populate views to be used by RecyclerView.
      */
-    public BookmarksAdapter(Word[] dataSet) {
+    public HistoryRecyclerViewAdapter(Word[] dataSet) {
         mDataSet = dataSet;
     }
 

@@ -5,6 +5,7 @@
     tools:context="com.aminbenarieb.yandextask.BookmarksFragment"
     android:orientation="vertical">
 
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"

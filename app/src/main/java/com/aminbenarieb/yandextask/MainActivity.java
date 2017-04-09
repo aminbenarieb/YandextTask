@@ -14,6 +14,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.ImageButton;
 
+import com.aminbenarieb.yandextask.History.HistoryListFragment;
+import com.aminbenarieb.yandextask.History.HomeTranslateFragment;
+
 public class MainActivity extends AppCompatActivity   {
 
     private static final String TAG = MainActivity.class.getSimpleName();

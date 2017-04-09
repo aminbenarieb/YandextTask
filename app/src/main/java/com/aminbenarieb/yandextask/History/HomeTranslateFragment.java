@@ -1,4 +1,4 @@
-package com.aminbenarieb.yandextask;
+package com.aminbenarieb.yandextask.History;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.aminbenarieb.yandextask.R;
 
 /**
  * Created by aminbenarieb on 4/6/17.
@@ -61,9 +63,6 @@ public class HomeTranslateFragment extends Fragment {
     //endregion
 
     void populateViews() {
-        mTranslateSourceTextView.setText("Hello");
-
-        mTranslateResultTextView.setText(Html.fromHtml("<b>Здравствуйте</b>"));
     }
 
 }

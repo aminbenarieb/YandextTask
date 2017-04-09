@@ -5,4 +5,5 @@
     <string name="title_bookmarks">Bookmarks</string>
     <string name="bookmark">Bookmark</string>
     <string name="language_switch">Switch languages</string>
+    <string name="translate_language_hint">Type text</string>
 </resources>

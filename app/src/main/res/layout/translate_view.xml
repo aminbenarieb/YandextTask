@@ -16,6 +16,7 @@
         android:textColor="@android:color/black"
         android:gravity="center"
         tools:text="Hello"
+        android:hint="@string/translate_language_hint"
         />
     <TextView
         android:id="@+id/translate_result"

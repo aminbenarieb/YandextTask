@@ -106,16 +106,12 @@ public class MainActivity extends AppCompatActivity   {
         final TabLayout tabLayout = (TabLayout)v.findViewById(R.id.tabLayout);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.title_history));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.title_bookmarks));
-        tabLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "Clicked on tab...");
-            }
-
-            /*
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
              @Override
             public void onTabSelected(TabLayout.Tab tab) {
+
+                Log.i("TAG", "onTabReselected: " + tab.getPosition());
 
                 switch (tabLayout.getSelectedTabPosition()) {
                     case 0:
@@ -134,8 +130,6 @@ public class MainActivity extends AppCompatActivity   {
             public void onTabReselected(TabLayout.Tab tab) {
 
             }
-
-            * */
         });
 
     }

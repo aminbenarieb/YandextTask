@@ -45,7 +45,7 @@ public class BookmarksFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.bookmarks_list, container, false);
+        View rootView = inflater.inflate(R.layout.activite_history_bookmarks, container, false);
         rootView.setTag(TAG);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);

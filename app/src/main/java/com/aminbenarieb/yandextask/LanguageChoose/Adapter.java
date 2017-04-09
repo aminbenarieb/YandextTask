@@ -29,7 +29,7 @@ public class Adapter extends RecyclerView.Adapter<Holder> {
                 R.layout.view_language_recycleview,
                 parent,
                 false);
-        return new Holder(view);
+        return new Holder(view, mContext);
     }
 
     @Override

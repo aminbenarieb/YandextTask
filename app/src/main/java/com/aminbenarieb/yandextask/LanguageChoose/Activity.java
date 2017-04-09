@@ -31,7 +31,7 @@ public class Activity extends AppCompatActivity {
         mLanguageList = getIntent().getStringArrayListExtra("LANGUAGES");
         if (mAdapter == null)
         {
-            mAdapter = new Adapter();
+            mAdapter = new Adapter(mLanguageList, this);
             mRecyclerView.setAdapter(mAdapter);
             return;
         }

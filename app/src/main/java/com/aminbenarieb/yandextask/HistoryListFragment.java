@@ -1,21 +1,20 @@
 package com.aminbenarieb.yandextask;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
+import android.support.v4.app.Fragment;
 
 
 /**
  * Created by aminbenarieb on 4/7/17.
  */
 
-public class BookmarksFragment extends Fragment {
+public class HistoryListFragment extends Fragment {
     private static final String TAG = "RecyclerViewFragment";
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
     private static final int SPAN_COUNT = 2;
@@ -29,7 +28,7 @@ public class BookmarksFragment extends Fragment {
     protected LayoutManagerType mCurrentLayoutManagerType;
 
     protected RecyclerView mRecyclerView;
-    protected BookmarksAdapter mAdapter;
+    protected HistoryRecyclerViewAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
     protected Word[] mDataset;
 
@@ -45,7 +44,7 @@ public class BookmarksFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.activite_history_bookmarks, container, false);
+        View rootView = inflater.inflate(R.layout.view_history_recyclerview, container, false);
         rootView.setTag(TAG);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
@@ -64,8 +63,8 @@ public class BookmarksFragment extends Fragment {
         }
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
 
-        mAdapter = new BookmarksAdapter(mDataset);
-        // Set BookmarksAdapter as the adapter for RecyclerView.
+        mAdapter = new HistoryRecyclerViewAdapter(mDataset);
+        // Set HistoryRecyclerViewAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
 
         return rootView;
@@ -120,4 +119,5 @@ public class BookmarksFragment extends Fragment {
             mDataset[i] = new Word("Source #" + i, "Translate #" + i);
         }
     }
+
 }

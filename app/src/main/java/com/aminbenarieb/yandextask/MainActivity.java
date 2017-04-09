@@ -4,10 +4,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.widget.ImageButton;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -55,10 +59,34 @@ public class MainActivity extends AppCompatActivity {
         // Set initial fragment
         setContentFragment(mHomeTranslateFragment);
 
+        // Set language switcher to action bar
+        setupLanguageSwitcher();
+
     }
 
     void setContentFragment(Fragment fragmentReplaceWith) {
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.content, fragmentReplaceWith).commit();
     }
+
+    // Language switcher in action bar
+
+    void setupLanguageSwitcher() {
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        actionBar.setDisplayShowHomeEnabled(false);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setCustomView(R.layout.view_language_chooser);
+
+        View v = getSupportActionBar().getCustomView();
+        ImageButton imageButton= (ImageButton)v.findViewById(R.id.language_swap);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Switched lang.");
+            }
+        });
+    }
+
 }

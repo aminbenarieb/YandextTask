@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:id="@+id/language_switcher"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <TableRow>
+
+
+        <Button
+            android:id="@+id/source_language"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_weight="0.45"
+            android:typeface="normal"
+            tools:text="Русский"
+            style="@style/Widget.AppCompat.Button.Borderless"/>
+
+        <ImageButton
+            android:id="@+id/language_swap"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/language_switch"
+            app:srcCompat="@drawable/swap_horiz"
+            tools:ignore="MissingPrefix"
+            android:layout_weight="0.1"
+            android:background="@android:color/transparent"
+            android:tint="@color/android:white"/>
+
+        <Button
+            android:id="@+id/result_language"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_weight="0.45"
+            android:typeface="normal"
+            tools:text="English"
+            style="@style/Widget.AppCompat.Button.Borderless" />
+
+    </TableRow>
+
+</TableLayout>

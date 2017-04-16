@@ -5,6 +5,7 @@ import android.os.Parcel;
 import com.aminbenarieb.yandextask.WordInt;
 import android.os.Parcelable;
 import android.os.Parcel;
+import android.util.Log;
 
 /**
  * Created by aminbenarieb on 4/6/17.
@@ -19,6 +20,14 @@ public class Word implements WordInt {
     public Word(String source, String result){
         this.source = source;
         this.result = result;
+    }
+
+    //Getters
+    public String getSource() {
+        return source;
+    }
+    public String getResult() {
+        return result;
     }
 
     //region Parcelable subroutines

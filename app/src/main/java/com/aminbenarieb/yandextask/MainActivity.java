@@ -1,6 +1,5 @@
 package com.aminbenarieb.yandextask;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,25 +13,26 @@ import android.view.View;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
-import com.aminbenarieb.yandextask.History.HistoryListFragment;
-import com.aminbenarieb.yandextask.History.HomeTranslateFragment;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import com.aminbenarieb.yandextask.UI.History.HistoryListFragment;
+import com.aminbenarieb.yandextask.UI.HomeTranslateFragment;
+
+/**
+ * Created by aminbenarieb on 4/6/17.
+ */
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener  {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private BottomNavigationView bottomNavigation;
     private Fragment mHomeTranslateFragment = new HomeTranslateFragment();
-    private EditText mSourceEditText;
-    private TextView mResultEditText;
     private ImageButton mButtonSwapLanguages;
     private Button mButtonChooseSourceLanguage;
     private Button mButtonChooseResultLanguage;
@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         setupActionBar();
         setupLanguageSwitcher();
-        setupEditTexts();
         setupButtonLanguages();
         setupListeners();
     }
@@ -78,7 +77,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
 
-        showKeyboard();
     }
 
     //endregion
@@ -184,11 +182,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mButtonChooseResultLanguage.setText(langs.get(1));
     }
 
-    private void setupEditTexts(){
-        mSourceEditText = (EditText) findViewById(R.id.translate_source);
-        mResultEditText = (TextView) findViewById(R.id.translate_result);
-    }
-
     private void setupListeners() {
         mButtonSwapLanguages.setOnClickListener(this);
         mButtonChooseSourceLanguage.setOnClickListener(this);
@@ -199,13 +192,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //region Actions
 
-    void showKeyboard() {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(mSourceEditText, InputMethodManager.SHOW_IMPLICIT);
-    }
-
     void showLanguageChooseActivity(int actionIdx) {
-        Intent intent = new Intent(MainActivity.this, com.aminbenarieb.yandextask.LanguageChoose.Activity.class);
+        Intent intent = new Intent(MainActivity.this, com.aminbenarieb.yandextask.UI.LanguageChoose.Activity.class);
         intent.putStringArrayListExtra("LANGUAGES", getTempLangs());
         startActivityForResult(intent, actionIdx);
     }
@@ -257,7 +245,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
     void updateLanguageButton(String selectedLanguage, Button buttonLanguage) {
         buttonLanguage = buttonLanguage == mButtonChooseSourceLanguage
                 ? mButtonChooseResultLanguage
@@ -272,4 +259,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     //endregion
+
 }

@@ -1,4 +1,4 @@
-package com.aminbenarieb.yandextask.LanguageChoose;
+package com.aminbenarieb.yandextask.UI.LanguageChoose;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

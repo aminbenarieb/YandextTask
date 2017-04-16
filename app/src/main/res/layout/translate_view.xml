@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="14dp"
     android:weightSum="10"
-    tools:context="com.aminbenarieb.yandextask.History.HomeTranslateFragment">
+    tools:context="com.aminbenarieb.yandextask.MainActivity">
 
     <EditText
         android:id="@+id/translate_source"
@@ -24,9 +24,10 @@
         android:id="@+id/translate_result"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:textSize="20sp"
         android:layout_weight="7"
         android:textColor="@android:color/black"
-        android:gravity="center"
+        android:gravity="left"
         tools:text="Здравствуйте"
         />
 

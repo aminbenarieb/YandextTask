@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="request_base_url">https://translate.yandex.net/api/v1.5/tr.json/translate/</string>
+    <string name="request_base_url">https://translate.yandex.net/api/v1.5/tr.json/</string>
     <string name="api_key">trnsl.1.1.20170404T174120Z.3a3fe5ebdfaee80f.95af8fdd99b2f6f0003bcd741545de0d177f8e26</string>
     <string name="request_key_key">key</string>
     <string name="request_text_key">text</string>

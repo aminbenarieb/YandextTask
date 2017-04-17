@@ -1,4 +1,4 @@
-package com.aminbenarieb.yandextask;
+package com.aminbenarieb.yandextask.Model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class PostModel implements Parcelable
+public class TranslatedWordModel implements Parcelable
 {
 
     @SerializedName("code")
@@ -19,22 +19,22 @@ public class PostModel implements Parcelable
     @SerializedName("text")
     @Expose
     private List<String> text = new ArrayList<String>();
-    public final static Parcelable.Creator<PostModel> CREATOR = new Creator<PostModel>() {
+    public final static Parcelable.Creator<TranslatedWordModel> CREATOR = new Creator<TranslatedWordModel>() {
 
 
         @SuppressWarnings({
                 "unchecked"
         })
-        public PostModel createFromParcel(Parcel in) {
-            PostModel instance = new PostModel();
+        public TranslatedWordModel createFromParcel(Parcel in) {
+            TranslatedWordModel instance = new TranslatedWordModel();
             instance.code = ((Integer) in.readValue((Integer.class.getClassLoader())));
             instance.lang = ((String) in.readValue((String.class.getClassLoader())));
             in.readList(instance.text, (java.lang.String.class.getClassLoader()));
             return instance;
         }
 
-        public PostModel[] newArray(int size) {
-            return (new PostModel[size]);
+        public TranslatedWordModel[] newArray(int size) {
+            return (new TranslatedWordModel[size]);
         }
 
     }
@@ -44,7 +44,7 @@ public class PostModel implements Parcelable
      * No args constructor for use in serialization
      *
      */
-    public PostModel() {
+    public TranslatedWordModel() {
     }
 
     /**
@@ -53,7 +53,7 @@ public class PostModel implements Parcelable
      * @param code
      * @param lang
      */
-    public PostModel(Integer code, String lang, List<String> text) {
+    public TranslatedWordModel(Integer code, String lang, List<String> text) {
         super();
         this.code = code;
         this.lang = lang;

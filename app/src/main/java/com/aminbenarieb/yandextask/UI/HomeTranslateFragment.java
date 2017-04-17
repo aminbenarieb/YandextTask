@@ -1,7 +1,6 @@
 package com.aminbenarieb.yandextask.UI;
 
 import android.content.Context;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,12 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aminbenarieb.yandextask.Extensions.ABApplication;
-import com.aminbenarieb.yandextask.MainActivity;
-import com.aminbenarieb.yandextask.PostModel;
+import com.aminbenarieb.yandextask.Model.TranslatedWordModel;
 import com.aminbenarieb.yandextask.R;
-
-import java.io.IOException;
-import java.util.List;
 
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -111,10 +106,10 @@ public class HomeTranslateFragment extends Fragment {
 
         String apiKey = getString(R.string.api_key);
         ABApplication.getApi().getTranslatedWord(apiKey, word, "en").enqueue(
-                new Callback<PostModel>() {
+                new Callback<TranslatedWordModel>() {
                     @Override
-                    public void onResponse(retrofit2.Call<com.aminbenarieb.yandextask.PostModel> call,
-                                           Response<PostModel> response) {
+                    public void onResponse(retrofit2.Call<TranslatedWordModel> call,
+                                           Response<TranslatedWordModel> response) {
 
                         if (response.code() != 200 ) {
                             Log.d(TAG, "onResponse - Status : " + response.code());
@@ -135,7 +130,7 @@ public class HomeTranslateFragment extends Fragment {
                     }
 
                     @Override
-                    public void onFailure(retrofit2.Call<com.aminbenarieb.yandextask.PostModel> call,
+                    public void onFailure(retrofit2.Call<TranslatedWordModel> call,
                                           Throwable t) {
 
                         Toast.makeText(getActivity(), "An error occurred during networking",

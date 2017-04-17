@@ -1,6 +1,5 @@
-package com.aminbenarieb.yandextask;
+package com.aminbenarieb.yandextask.Screens.Main;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,71 +13,77 @@ import android.view.View;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
-import com.aminbenarieb.yandextask.History.HistoryListFragment;
-import com.aminbenarieb.yandextask.History.HomeTranslateFragment;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+
+import com.aminbenarieb.yandextask.Extensions.Dynamic;
+import com.aminbenarieb.yandextask.R;
+import com.aminbenarieb.yandextask.Screens.History.HistoryListFragment;
+import com.aminbenarieb.yandextask.Screens.HomeTranslate.ABHomeTranslateFragment;
+import com.aminbenarieb.yandextask.Screens.HomeTranslate.HomeTranslateFragment;
+import com.aminbenarieb.yandextask.Screens.LanguageChoose.LanguageChooseActivity;
+import com.aminbenarieb.yandextask.Services.Language.ABLanguage;
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener  {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
     private BottomNavigationView bottomNavigation;
-    private Fragment mHomeTranslateFragment = new HomeTranslateFragment();
-    private EditText mSourceEditText;
-    private TextView mResultEditText;
+    private ActionBar actionBar;
+
+    private FragmentManager fragmentManager;
+    private MainActivityViewModel viewModel = new ABMainActivityViewModel(
+            new ABMainActivityModel(
+                    ABLanguage.INSTANCE
+            )
+    );
+
+    private Fragment mBookmarksFragment;
+    private HomeTranslateFragment mHomeTranslateFragment;
+    private Intent mLanguageChooseIntent;
+
     private ImageButton mButtonSwapLanguages;
     private Button mButtonChooseSourceLanguage;
     private Button mButtonChooseResultLanguage;
-    private Fragment mBookmarksFragment = new HistoryListFragment();
-    private FragmentManager fragmentManager;
-    private ActionBar actionBar;
 
-    //region Temp
-    //TODO Put in model layer
-    private ArrayList<String> getTempLangs() {
-        return new ArrayList<String>(Arrays.asList(
-                "Русский",
-                "English",
-                "العربية",
-                "Deutch"
-        ));
-    }
 
-    //endregion
-
-    //region Activity Lifecycle
+    //region LanguageChooseActivity Lifecycle
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        // Setting up
         setContentView(R.layout.activity_main);
 
         bottomNavigation = (BottomNavigationView) findViewById(R.id.navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
         fragmentManager = getSupportFragmentManager();
 
-        setContentFragment(mHomeTranslateFragment);
-
         setupActionBar();
+        setupFragments();
         setupLanguageSwitcher();
-        setupEditTexts();
         setupButtonLanguages();
         setupListeners();
+        setupBinding();
+
+        // Setup context
+        ABLanguage.INSTANCE.setContext(MainActivity.this);
+
+        // Load languages
+        viewModel.loadLanguages();
+
+        // Initial fragment
+        setContentFragment((Fragment) mHomeTranslateFragment);
     }
+
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        showKeyboard();
     }
 
     //endregion
@@ -94,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             switch (id) {
                 case R.id.navigation_home:
                     setupLanguageSwitcher();
-                    fragment = mHomeTranslateFragment;
+                    fragment = (Fragment)mHomeTranslateFragment;
                     break;
                 case R.id.navigation_dashboard:
                     setupTabPager();
@@ -118,6 +123,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //region Setup subroutines
 
+    private void setupFragments() {
+        mBookmarksFragment = new HistoryListFragment();
+        mHomeTranslateFragment = new ABHomeTranslateFragment();
+        mLanguageChooseIntent = new Intent(MainActivity.this,
+                LanguageChooseActivity.class);
+    }
+
     private void setupActionBar() {
         actionBar = getSupportActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -128,15 +140,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setupLanguageSwitcher() {
         actionBar.setCustomView(R.layout.view_language_chooser);
-
-        View v = actionBar.getCustomView();
-        ImageButton imageButton= (ImageButton)v.findViewById(R.id.language_swap);
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "Switched lang.");
-            }
-        });
     }
 
     private void setupTabPager() {
@@ -178,15 +181,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mButtonChooseSourceLanguage = (Button) findViewById(R.id.source_language);
         mButtonSwapLanguages = (ImageButton) findViewById(R.id.language_swap);
         mButtonChooseResultLanguage = (Button) findViewById(R.id.result_language);
-
-        ArrayList<String> langs = getTempLangs();
-        mButtonChooseSourceLanguage.setText(langs.get(0));
-        mButtonChooseResultLanguage.setText(langs.get(1));
-    }
-
-    private void setupEditTexts(){
-        mSourceEditText = (EditText) findViewById(R.id.translate_source);
-        mResultEditText = (TextView) findViewById(R.id.translate_result);
     }
 
     private void setupListeners() {
@@ -195,29 +189,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mButtonChooseResultLanguage.setOnClickListener(this);
     }
 
+    private void setupBinding() {
+        viewModel.mLanguagesList.bindAndFire(new Dynamic.Listener() {
+            @Override
+            public void onResponse(Object value) {
+
+
+            }
+        });
+
+        viewModel.mSourceLanguage.bindAndFire(new Dynamic.Listener() {
+            @Override
+            public void onResponse(Object value) {
+                mButtonChooseSourceLanguage.setText((String)value);
+            }
+        });
+
+        viewModel.mResultLanguage.bindAndFire(new Dynamic.Listener() {
+            @Override
+            public void onResponse(Object value) {
+                mButtonChooseResultLanguage.setText((String)value);
+                mHomeTranslateFragment.setResultLanguage( (String)value );
+            }
+        });
+    }
+
     //endregion
 
     //region Actions
-
-    void showKeyboard() {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(mSourceEditText, InputMethodManager.SHOW_IMPLICIT);
-    }
-
-    void showLanguageChooseActivity(int actionIdx) {
-        Intent intent = new Intent(MainActivity.this, com.aminbenarieb.yandextask.LanguageChoose.Activity.class);
-        intent.putStringArrayListExtra("LANGUAGES", getTempLangs());
-        startActivityForResult(intent, actionIdx);
-    }
-
-    void swapLanguages() {
-        //TODO Put in model layer
-        ArrayList<String> langs = getTempLangs();
-        String sourceLang = mButtonChooseSourceLanguage.getText().toString();
-        String resultLang = mButtonChooseResultLanguage.getText().toString();
-        mButtonChooseSourceLanguage.setText(resultLang);
-        mButtonChooseResultLanguage.setText(sourceLang);
-    }
 
     @Override
     public void onClick(View view) {
@@ -228,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 showLanguageChooseActivity(0);
                 break;
             case R.id.language_swap:
-                swapLanguages();
+                viewModel.swapLanguages();
                 break;
             case R.id.result_language:
                 showLanguageChooseActivity(1);
@@ -249,27 +248,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (requestCode)
         {
             case 0:
-                updateLanguageButton(selectedLanguage, mButtonChooseSourceLanguage);
+                viewModel.setSourceLanguage(selectedLanguage);
                 break;
             case 1:
-                updateLanguageButton(selectedLanguage, mButtonChooseResultLanguage);
+                viewModel.setResultLanguage(selectedLanguage);
                 break;
         }
     }
 
-
-    void updateLanguageButton(String selectedLanguage, Button buttonLanguage) {
-        buttonLanguage = buttonLanguage == mButtonChooseSourceLanguage
-                ? mButtonChooseResultLanguage
-                : mButtonChooseSourceLanguage;
-
-        if (buttonLanguage.getText().equals(selectedLanguage)) {
-            swapLanguages();
-            return;
-        }
-
-        buttonLanguage.setText(selectedLanguage);
+    private void showLanguageChooseActivity(int actionIdx) {
+        mLanguageChooseIntent.putStringArrayListExtra("LANGUAGES",
+                (ArrayList<String>)viewModel.mLanguagesList.getValue());
+        startActivityForResult(mLanguageChooseIntent, actionIdx);
     }
 
+
     //endregion
+
 }

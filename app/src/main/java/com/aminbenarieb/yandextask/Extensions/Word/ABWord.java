@@ -1,23 +1,19 @@
-package com.aminbenarieb.yandextask;
+package com.aminbenarieb.yandextask.Extensions.Word;
 
 import android.os.Parcel;
 
-import com.aminbenarieb.yandextask.WordInt;
 import android.os.Parcelable;
-import android.os.Parcel;
-import android.util.Log;
 
 /**
  * Created by aminbenarieb on 4/6/17.
  */
 
-public class Word implements WordInt {
+public class ABWord implements Word {
 
     private String source;
     private String result;
 
-
-    public Word(String source, String result){
+    public ABWord(String source, String result){
         this.source = source;
         this.result = result;
     }
@@ -33,7 +29,7 @@ public class Word implements WordInt {
     //region Parcelable subroutines
 
     // Parcelling part
-    public Word(Parcel in){
+    public ABWord(Parcel in){
         String[] data = new String[2];
 
         in.readStringArray(data);
@@ -49,16 +45,16 @@ public class Word implements WordInt {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        
+
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        public Word createFromParcel(Parcel in) {
-            return new Word(in);
+        public ABWord createFromParcel(Parcel in) {
+            return new ABWord(in);
         }
 
-        public Word[] newArray(int size) {
-            return new Word[size];
+        public ABWord[] newArray(int size) {
+            return new ABWord[size];
         }
     };
     //endregion

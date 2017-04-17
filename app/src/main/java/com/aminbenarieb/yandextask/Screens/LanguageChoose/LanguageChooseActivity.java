@@ -1,4 +1,4 @@
-package com.aminbenarieb.yandextask.LanguageChoose;
+package com.aminbenarieb.yandextask.Screens.LanguageChoose;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,9 +15,9 @@ import java.util.List;
  * Created by aminbenarieb on 4/9/17.
  */
 
-public class Activity extends AppCompatActivity {
+public class LanguageChooseActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
-    private Adapter mAdapter;
+    private LanguageChoose mAdapter;
     private List<String> mLanguageList;
 
     @Override
@@ -31,7 +31,7 @@ public class Activity extends AppCompatActivity {
         mLanguageList = getIntent().getStringArrayListExtra("LANGUAGES");
         if (mAdapter == null)
         {
-            mAdapter = new Adapter(mLanguageList, this);
+            mAdapter = new LanguageChoose(mLanguageList, this);
             mRecyclerView.setAdapter(mAdapter);
             return;
         }

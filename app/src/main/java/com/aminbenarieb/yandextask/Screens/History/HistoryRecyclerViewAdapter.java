@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-package com.aminbenarieb.yandextask.History;
+package com.aminbenarieb.yandextask.Screens.History;
 
 import android.util.Log;
 import android.support.v7.widget.RecyclerView;
@@ -23,12 +23,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.aminbenarieb.yandextask.Extensions.Word.*;
 import com.aminbenarieb.yandextask.R;
-import com.aminbenarieb.yandextask.Word;
 
 
 public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecyclerViewAdapter.ViewHolder> {
-    private static final String TAG = "HistoryRecyclerViewAdapter";
+    private static final String TAG = "HRViewAdapter";
     private Word[] mDataSet;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -57,9 +57,9 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
     }
 
     /**
-     * Initialize the dataset of the Adapter.
+     * Initialize the dataset of the LanguageChoose.
      *
-     * @param dataSet Word[] containing the data to populate views to be used by RecyclerView.
+     * @param dataSet ABWord[] containing the data to populate views to be used by RecyclerView.
      */
     public HistoryRecyclerViewAdapter(Word[] dataSet) {
         mDataSet = dataSet;

@@ -1,4 +1,4 @@
-package com.aminbenarieb.yandextask.History;
+package com.aminbenarieb.yandextask.Screens.History;
 
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -9,8 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
 
+import com.aminbenarieb.yandextask.Extensions.Word.*;
 import com.aminbenarieb.yandextask.R;
-import com.aminbenarieb.yandextask.Word;
 
 
 /**
@@ -117,9 +117,9 @@ public class HistoryListFragment extends Fragment {
      * from a local content provider or remote server.
      */
     private void initDataset() {
-        mDataset = new Word[DATASET_COUNT];
+        mDataset = new ABWord[DATASET_COUNT];
         for (int i = 0; i < DATASET_COUNT; i++) {
-            mDataset[i] = new Word("Source #" + i, "Translate #" + i);
+            mDataset[i] = new ABWord("Source #" + i, "Translate #" + i);
         }
     }
 

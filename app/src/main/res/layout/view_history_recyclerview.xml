@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.History.HistoryListFragment"
+    tools:context=".Screens.History.HistoryListFragment"
     android:orientation="vertical">
 
 

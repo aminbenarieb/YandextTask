@@ -1,4 +1,4 @@
-package com.aminbenarieb.yandextask;
+package com.aminbenarieb.yandextask.Screens;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,8 +20,8 @@ import android.widget.ImageButton;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.aminbenarieb.yandextask.UI.History.HistoryListFragment;
-import com.aminbenarieb.yandextask.UI.HomeTranslateFragment;
+import com.aminbenarieb.yandextask.R;
+import com.aminbenarieb.yandextask.Screens.History.HistoryListFragment;
 
 /**
  * Created by aminbenarieb on 4/6/17.
@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //region Actions
 
     void showLanguageChooseActivity(int actionIdx) {
-        Intent intent = new Intent(MainActivity.this, com.aminbenarieb.yandextask.UI.LanguageChoose.Activity.class);
+        Intent intent = new Intent(MainActivity.this, com.aminbenarieb.yandextask.Screens.LanguageChoose.Activity.class);
         intent.putStringArrayListExtra("LANGUAGES", getTempLangs());
         startActivityForResult(intent, actionIdx);
     }

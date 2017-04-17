@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-package com.aminbenarieb.yandextask.UI.History;
+package com.aminbenarieb.yandextask.Screens.History;
 
 import android.util.Log;
 import android.support.v7.widget.RecyclerView;

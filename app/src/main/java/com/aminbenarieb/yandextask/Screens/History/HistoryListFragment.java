@@ -1,4 +1,4 @@
-package com.aminbenarieb.yandextask.UI.History;
+package com.aminbenarieb.yandextask.Screens.History;
 
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;

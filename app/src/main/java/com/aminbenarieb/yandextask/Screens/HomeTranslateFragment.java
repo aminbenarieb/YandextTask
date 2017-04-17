@@ -1,4 +1,4 @@
-package com.aminbenarieb.yandextask.UI;
+package com.aminbenarieb.yandextask.Screens;
 
 import android.content.Context;
 import android.os.Bundle;

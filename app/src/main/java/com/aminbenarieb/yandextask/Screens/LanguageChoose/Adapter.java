@@ -1,4 +1,4 @@
-package com.aminbenarieb.yandextask.UI.LanguageChoose;
+package com.aminbenarieb.yandextask.Screens.LanguageChoose;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

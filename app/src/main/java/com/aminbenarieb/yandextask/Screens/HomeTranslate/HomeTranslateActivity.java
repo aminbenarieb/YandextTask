@@ -1,4 +1,4 @@
-package com.aminbenarieb.yandextask.Screens;
+package com.aminbenarieb.yandextask.Screens.HomeTranslate;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,9 +28,9 @@ import com.aminbenarieb.yandextask.Screens.History.HistoryListFragment;
  */
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener  {
+public class HomeTranslateActivity extends AppCompatActivity implements View.OnClickListener  {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = HomeTranslateActivity.class.getSimpleName();
     private BottomNavigationView bottomNavigation;
     private Fragment mHomeTranslateFragment = new HomeTranslateFragment();
     private ImageButton mButtonSwapLanguages;
@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //region Actions
 
     void showLanguageChooseActivity(int actionIdx) {
-        Intent intent = new Intent(MainActivity.this, com.aminbenarieb.yandextask.Screens.LanguageChoose.Activity.class);
+        Intent intent = new Intent(HomeTranslateActivity.this, com.aminbenarieb.yandextask.Screens.LanguageChoose.Activity.class);
         intent.putStringArrayListExtra("LANGUAGES", getTempLangs());
         startActivityForResult(intent, actionIdx);
     }

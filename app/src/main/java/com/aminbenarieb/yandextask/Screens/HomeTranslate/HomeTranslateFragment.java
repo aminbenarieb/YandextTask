@@ -1,4 +1,4 @@
-package com.aminbenarieb.yandextask.Screens;
+package com.aminbenarieb.yandextask.Screens.HomeTranslate;
 
 import android.content.Context;
 import android.os.Bundle;

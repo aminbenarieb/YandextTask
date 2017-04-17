@@ -1,4 +1,4 @@
-package com.aminbenarieb.yandextask.Word;
+package com.aminbenarieb.yandextask.Extensions.Word;
 
 import android.os.Parcel;
 

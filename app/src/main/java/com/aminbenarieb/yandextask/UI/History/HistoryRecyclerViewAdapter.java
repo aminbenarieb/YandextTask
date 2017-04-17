@@ -23,7 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.aminbenarieb.yandextask.Word.*;
+import com.aminbenarieb.yandextask.Extensions.Word.*;
 import com.aminbenarieb.yandextask.R;
 
 

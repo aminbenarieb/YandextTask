@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="14dp"
     android:weightSum="10"
-    tools:context="com.aminbenarieb.yandextask.Screens.HomeTranslate.HomeTranslateActivity">
+    tools:context="com.aminbenarieb.yandextask.Screens.Main.MainActivity">
 
     <EditText
         android:id="@+id/translate_source"

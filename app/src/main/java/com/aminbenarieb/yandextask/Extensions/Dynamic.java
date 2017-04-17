@@ -6,26 +6,28 @@ package com.aminbenarieb.yandextask.Extensions;
 
 public class Dynamic<T> {
     Listener listener;
-    interface Listener<T> {
+    public interface Listener<T> {
         void onResponse(T value);
     }
-    private T value;
 
-    void bind(Listener listener) {
-        this.listener = listener;
+    public  Dynamic(T value){
+        this.value = value;
     }
 
-    void bindAndFire(Listener listener) {
-        bind(listener);
+    private T value;
+    public void setValue(T value) {
+        this.value = value;
         listener.onResponse(value);
     }
-
-    Dynamic(T value){
-        this.value = value;
+    public T getValue() {
+        return value;
     }
 
-    void setValue(T value) {
-        this.value = value;
+    public  void bind(Listener listener) {
+        this.listener = listener;
+    }
+    public  void bindAndFire(Listener listener) {
+        bind(listener);
         listener.onResponse(value);
     }
 }

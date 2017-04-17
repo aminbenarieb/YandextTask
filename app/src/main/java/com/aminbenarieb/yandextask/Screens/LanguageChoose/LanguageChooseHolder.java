@@ -12,11 +12,11 @@ import com.aminbenarieb.yandextask.R;
  * Created by aminbenarieb on 4/9/17.
  */
 
-public class Holder extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class LanguageChooseHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private Button mButtonLanguage;
     Context mContext;
 
-    Holder(View itemView, Context context) {
+    LanguageChooseHolder(View itemView, Context context) {
         super(itemView);
         this.mContext = context;
         this.mButtonLanguage = (Button) itemView.findViewById(R.id.button_language);
@@ -32,11 +32,11 @@ public class Holder extends RecyclerView.ViewHolder implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        if(!(mContext instanceof Activity)){
+        if(!(mContext instanceof LanguageChooseActivity)){
             return;
         }
 
-        Activity activity = (Activity)mContext;
+        LanguageChooseActivity activity = (LanguageChooseActivity)mContext;
         Intent intent = new Intent();
         intent.putExtra("LANGUAGE", mButtonLanguage.getText());
         activity.setResult(activity.RESULT_OK, intent);

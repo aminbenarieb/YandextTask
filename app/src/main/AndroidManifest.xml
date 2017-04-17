@@ -18,7 +18,7 @@
         android:name=".Extensions.ABApplication"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Screens.HomeTranslate.HomeTranslateActivity"
+            android:name=".Screens.Main.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Screens.LanguageChoose.Activity"
+            android:name=".Screens.LanguageChoose.LanguageChooseActivity"
             android:screenOrientation="portrait"/>
     </application>
 

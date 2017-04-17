@@ -1,5 +1,7 @@
 package com.aminbenarieb.yandextask.Services.Language;
 
+import android.content.Context;
+
 import java.util.List;
 
 /**
@@ -16,4 +18,5 @@ public interface Language {
     public void loadLanguages(LanguageListCompletionHandler completion);
     public String keyForLanguage(String language);
 
+    void setContext(Context mContext);
 }

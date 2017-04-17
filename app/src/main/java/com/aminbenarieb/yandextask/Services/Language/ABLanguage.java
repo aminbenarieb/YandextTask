@@ -2,6 +2,7 @@ package com.aminbenarieb.yandextask.Services.Language;
 
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -23,6 +24,14 @@ import retrofit2.Response;
 public class ABLanguage extends Service implements Language {
     private String TAG = "ABLanguage";
     private LanguagesMap languagesMap;
+    private Context mContext;
+    public void setContext(Context mContext) {
+        this.mContext = mContext;
+    }
+
+    public static final ABLanguage INSTANCE = new ABLanguage();
+
+    private ABLanguage() {}
 
     public void loadLanguages(final LanguageListCompletionHandler completion) {
         final ABLanguage self = this;
@@ -62,7 +71,7 @@ public class ABLanguage extends Service implements Language {
 
     private void downloadSupportedLanguagesModel(final SupportedLanguagesModelCompletionHandler completion) {
 
-        String apiKey = getString(R.string.api_key);
+        String apiKey = mContext.getString(R.string.api_key);
         ABApplication.getApi().getSupportedLanguages("en", apiKey).enqueue(
                 new Callback<SupportedLanguagesModel>() {
                     @Override

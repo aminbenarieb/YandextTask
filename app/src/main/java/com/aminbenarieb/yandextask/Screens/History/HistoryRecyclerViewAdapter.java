@@ -57,7 +57,7 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
     }
 
     /**
-     * Initialize the dataset of the Adapter.
+     * Initialize the dataset of the LanguageChoose.
      *
      * @param dataSet ABWord[] containing the data to populate views to be used by RecyclerView.
      */

@@ -10,7 +10,7 @@ import android.util.Log;
 
 import com.aminbenarieb.yandextask.Extensions.ABApplication;
 import com.aminbenarieb.yandextask.Extensions.LanguagesMap;
-import com.aminbenarieb.yandextask.Model.SupportedLanguagesModel;
+import com.aminbenarieb.yandextask.Entity.SupportedLanguagesModel;
 import com.aminbenarieb.yandextask.R;
 
 

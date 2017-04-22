@@ -6,25 +6,16 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.aminbenarieb.yandextask.Extensions.ABApplication;
 import com.aminbenarieb.yandextask.Extensions.Dynamic;
-import com.aminbenarieb.yandextask.Model.TranslatedWordModel;
 import com.aminbenarieb.yandextask.R;
 import com.aminbenarieb.yandextask.Services.Language.ABLanguage;
-
-import java.util.List;
-
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by aminbenarieb on 4/15/17.

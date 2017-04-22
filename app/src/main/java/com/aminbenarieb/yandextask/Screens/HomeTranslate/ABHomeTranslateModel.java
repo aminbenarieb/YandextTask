@@ -8,7 +8,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.aminbenarieb.yandextask.Extensions.ABApplication;
-import com.aminbenarieb.yandextask.Model.TranslatedWordModel;
+import com.aminbenarieb.yandextask.Entity.TranslatedWordModel;
 import com.aminbenarieb.yandextask.R;
 import com.aminbenarieb.yandextask.Services.Language.Language;
 

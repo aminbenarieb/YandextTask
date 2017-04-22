@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
 
-import com.aminbenarieb.yandextask.Extensions.Word.*;
+import com.aminbenarieb.yandextask.Entity.Word.*;
 import com.aminbenarieb.yandextask.R;
 
 

@@ -4,8 +4,8 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-import com.aminbenarieb.yandextask.Model.TranslatedWordModel;
-import com.aminbenarieb.yandextask.Model.SupportedLanguagesModel;
+import com.aminbenarieb.yandextask.Entity.TranslatedWordModel;
+import com.aminbenarieb.yandextask.Entity.SupportedLanguagesModel;
 
 /**
  * Created by aminbenarieb on 4/12/17.

@@ -23,7 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.aminbenarieb.yandextask.Extensions.Word.*;
+import com.aminbenarieb.yandextask.Entity.Word.*;
 import com.aminbenarieb.yandextask.R;
 
 
@@ -59,7 +59,7 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
     /**
      * Initialize the dataset of the LanguageChoose.
      *
-     * @param dataSet ABWord[] containing the data to populate views to be used by RecyclerView.
+     * @param dataSet Word[] containing the data to populate views to be used by RecyclerView.
      */
     public HistoryRecyclerViewAdapter(Word[] dataSet) {
         mDataSet = dataSet;

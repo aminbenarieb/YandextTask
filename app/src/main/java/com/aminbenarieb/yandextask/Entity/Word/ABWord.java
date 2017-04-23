@@ -5,9 +5,12 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 public class ABWord extends RealmObject implements Word {
 
+    @PrimaryKey
+    private long id;
     private String source;
     private String result;
     private Boolean isFavorite;

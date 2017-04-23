@@ -53,6 +53,8 @@ public class HistoryRecyclerViewAdapter
                     int row = viewHolder.getAdapterPosition();
                     WordInfo word = mDataSet.get(row);
                     mDataSet.remove(row);
+                    notifyItemRemoved(row);
+                    notifyItemRangeChanged(row, getItemCount());
                     delegate.didDeleteWord(word);
                 }
             }

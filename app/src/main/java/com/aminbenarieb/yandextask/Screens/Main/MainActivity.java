@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             )
     );
 
-    private Fragment mBookmarksFragment;
+    private HistoryListFragment mBookmarksFragment;
     private HomeTranslateFragment mHomeTranslateFragment;
     private Intent mLanguageChooseIntent;
 
@@ -206,12 +206,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 
-                Log.i("TAG", "onTabReselected: " + tab.getPosition());
-
                 switch (tabLayout.getSelectedTabPosition()) {
                     case 0:
+                        mBookmarksFragment.showHistory();
                         break;
                     case 1:
+                        mBookmarksFragment.showBookmarks();
                         break;
                 }
             }

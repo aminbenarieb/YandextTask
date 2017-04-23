@@ -78,7 +78,7 @@ public class HistoryListFragment extends Fragment implements HistoryAdapterDeleg
 
         // Initialize dataset, this data would usually come from a local content provider or
         // remote server.
-        initDataset();
+        showHistory();
 
         return rootView;
     }
@@ -163,7 +163,9 @@ public class HistoryListFragment extends Fragment implements HistoryAdapterDeleg
 
     //endregion
 
-    private void initDataset() {
+    //region HistoryView
+
+    public void showHistory() {
         this.mRepository.getHistoryWords(new Repository.RepositoryCompletionHandler() {
             @Override
             public void handle(RepositoryResponse response) {
@@ -172,5 +174,17 @@ public class HistoryListFragment extends Fragment implements HistoryAdapterDeleg
             }
         });
     }
+
+    public void showBookmarks() {
+        this.mRepository.getFavoriteHistoryWords(new Repository.RepositoryCompletionHandler() {
+            @Override
+            public void handle(RepositoryResponse response) {
+                List<WordInfo> mDataset = ((ABRepositoryResponse)response).getWords();
+                mAdapter.updateDataset(mDataset);
+            }
+        });
+    }
+
+    //endregion
 
 }

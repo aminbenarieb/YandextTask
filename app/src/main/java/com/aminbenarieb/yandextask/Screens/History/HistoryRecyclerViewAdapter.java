@@ -145,4 +145,6 @@ public class HistoryRecyclerViewAdapter
         delegate.didDeleteWord(word);
     }
     //endregion
+
+
 }

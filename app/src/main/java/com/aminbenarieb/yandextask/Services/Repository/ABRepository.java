@@ -30,7 +30,8 @@ public class ABRepository implements Repository  {
         realm.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm bgRealm) {
-                ABWord copyWord = new ABWord("Test", "Тест");
+
+                word.setId(getNextKey());
                 bgRealm.copyToRealm(word);
             }
         }, new Realm.Transaction.OnSuccess() {
@@ -108,5 +109,12 @@ public class ABRepository implements Repository  {
         });
     }
 
+    private int getNextKey()
+    {
+        try {
+            return realm.where(ABWord.class).max("id").intValue() + 1;
+        } catch (ArrayIndexOutOfBoundsException e)
+        { return 0; }
+    }
 
 }

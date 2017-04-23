@@ -9,4 +9,5 @@ import android.os.Parcelable;
 public interface Word extends Parcelable {
     String getSource();
     String getResult();
+    Boolean getFavorite();
 }

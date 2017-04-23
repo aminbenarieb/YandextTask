@@ -8,11 +8,12 @@ import java.util.Date;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
 
 public class ABWord extends RealmObject implements Word {
 
-    //@PrimaryKey
-    //private long id;
+    @PrimaryKey
+    private long id;
     private String source;
     private String result;
     private Boolean isFavorite;
@@ -45,6 +46,9 @@ public class ABWord extends RealmObject implements Word {
     //Setters
     public void setFavorite(Boolean favorite) {
         isFavorite = favorite;
+    }
+    public void setId(long id) {
+        this.id = id;
     }
 
     //region Parcelable subroutines

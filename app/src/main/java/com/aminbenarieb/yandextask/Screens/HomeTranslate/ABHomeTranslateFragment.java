@@ -19,6 +19,9 @@ import com.aminbenarieb.yandextask.R;
 import com.aminbenarieb.yandextask.Services.Language.ABLanguage;
 import com.aminbenarieb.yandextask.Services.Repository.ABRepository;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * Created by aminbenarieb on 4/15/17.
  */
@@ -28,6 +31,11 @@ public class ABHomeTranslateFragment extends Fragment implements HomeTranslateFr
     private TextView mSourceEditText;
     private TextView mResultEditText;
     private String mResultLanguage;
+
+
+    // Finish textview edition timer
+    private Timer timer = new Timer();
+    private final long DELAY = 1000;
 
     public HomeTranslateViewModel viewModel;
 
@@ -84,6 +92,9 @@ public class ABHomeTranslateFragment extends Fragment implements HomeTranslateFr
         viewModel.mTranslatedWord.bindAndFire(new Dynamic.Listener() {
             @Override
             public void onResponse(Object value) {
+                if (value == null)
+                    return;
+
                 mResultEditText.setText((String)value);
             }
         });
@@ -100,32 +111,43 @@ public class ABHomeTranslateFragment extends Fragment implements HomeTranslateFr
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                onTextChangedAction(s.toString());
+                if(timer != null)
+                    timer.cancel();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                onTextChangedAction(s.toString());
             }
         });
     }
 
     //region Actions
 
-    private void onTextChangedAction(String word) {
-        //TODO: 1) save to history
-        //TODO: 2) toggle hidden of result view
-        viewModel.translateWord(word,
-                mResultLanguage,
-                new HomeTranslateViewModel.HomeTranslateCompetionHandler() {
-                    @Override
-                    public void handle(Throwable t) {
-                        if (t != null) {
-                            String msg = t.getLocalizedMessage();
-                            Toast.makeText(getActivity().getBaseContext(), msg, Toast.LENGTH_LONG).show();
-                        }
-                    }
-        });
+    private void onTextChangedAction(final String word) {
+
+        if (word.length() < 2)
+            return;
+
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                viewModel.translateWord(word, mResultLanguage,
+                        new HomeTranslateViewModel.HomeTranslateCompetionHandler() {
+                            @Override
+                            public void handle(Throwable t) {
+                                if (t != null) {
+                                    String msg = t.getLocalizedMessage();
+                                    Toast.makeText(getActivity().getBaseContext(), msg, Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+            }
+
+        }, DELAY);
+
     }
 
     void showKeyboard() {

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 public class ABRepository implements Repository  {
 
@@ -69,7 +70,8 @@ public class ABRepository implements Repository  {
 
     public void getHistoryWords(final @NonNull RepositoryCompletionHandler completion) {
         realm = Realm.getDefaultInstance();
-        ArrayList<Word> wordList = new ArrayList<Word>(realm.where(ABWord.class).findAll());
+        ArrayList<Word> wordList = new ArrayList<Word>(realm.where(ABWord.class)
+                .findAllSorted("dateCreated", Sort.DESCENDING));
         completion.handle( new ABRepositoryResponse(wordList, true, null) );
     }
 

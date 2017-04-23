@@ -4,26 +4,31 @@ import android.os.Parcel;
 
 import android.os.Parcelable;
 
+import java.util.Date;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 public class ABWord extends RealmObject implements Word {
 
-    @PrimaryKey
-    private long id;
+    //@PrimaryKey
+    //private long id;
     private String source;
     private String result;
     private Boolean isFavorite;
+    private Date dateCreated;
 
     public ABWord() {
         this.source = "";
         this.result = "";
         this.isFavorite = false;
+        this.dateCreated = new Date();
     }
     public ABWord(String source, String result){
         this.source = source;
         this.result = result;
         this.isFavorite = false;
+        this.dateCreated = new Date();
     }
 
     //Getters

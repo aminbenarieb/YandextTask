@@ -16,8 +16,10 @@ import android.support.v4.app.FragmentTransaction;
 
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.aminbenarieb.yandextask.Extensions.Dynamic;
 import com.aminbenarieb.yandextask.R;
@@ -73,11 +75,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Setup context
         ABLanguage.INSTANCE.setContext(MainActivity.this);
 
-        // Load languages
-        viewModel.loadLanguages();
-
         // Initial fragment
         setContentFragment((Fragment) mHomeTranslateFragment);
+
+
+        // Load languages
+        viewModel.loadLanguages(new MainActivityViewModel.LoadLanguagersCompetionHandler() {
+            @Override
+            public void handle(List<String> languagesList, Throwable t) {
+                if (t != null) {
+                    String msg = t.getLocalizedMessage();
+                    Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+        });
     }
 
 
@@ -87,7 +99,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     //endregion
-
     //region BottomNavigation Selection Listener
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {

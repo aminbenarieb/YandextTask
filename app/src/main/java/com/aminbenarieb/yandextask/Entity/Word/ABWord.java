@@ -12,9 +12,15 @@ public class ABWord extends RealmObject implements Word {
     private String result;
     private Boolean isFavorite;
 
+    public ABWord() {
+        this.source = "";
+        this.result = "";
+        this.isFavorite = false;
+    }
     public ABWord(String source, String result){
         this.source = source;
         this.result = result;
+        this.isFavorite = false;
     }
 
     //Getters

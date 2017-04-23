@@ -13,7 +13,7 @@
 
     <LinearLayout
         android:layout_weight="9"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:gravity="center_vertical"
         android:orientation="vertical"
         android:layout_height="match_parent">
@@ -29,13 +29,18 @@
             tools:text="Здравствуйте"/>
     </LinearLayout>
 
-    <ImageView
+    <ImageButton
+        android:id="@+id/add_to_bookmarks"
+        android:layout_gravity="center"
         android:layout_weight="1"
-        android:layout_width="1dp"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:srcCompat="@drawable/bookmark_border"
         android:contentDescription="@string/bookmark"
-        android:adjustViewBounds="true"/>
+        tools:ignore="MissingPrefix"
+        android:background="@android:color/transparent"
+        android:tint="@color/buttonTint"
+        />
 
 
 </LinearLayout>

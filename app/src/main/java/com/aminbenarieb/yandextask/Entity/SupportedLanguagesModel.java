@@ -1,4 +1,4 @@
-package com.aminbenarieb.yandextask.Model;
+package com.aminbenarieb.yandextask.Entity;
 
 
 import java.util.List;

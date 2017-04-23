@@ -13,8 +13,8 @@ public class ABMainActivityModel implements MainActivityModel {
     public void loadLanguages(final MainActivityModel.LanguageListCompletionHandler completion) {
         mLanguage.loadLanguages(new Language.LanguageListCompletionHandler() {
             @Override
-            public void handle(List<String> languagesList) {
-                completion.handle(languagesList);
+            public void handle(List<String> languagesList, Throwable t) {
+                completion.handle(languagesList, t);
             }
         });
     }

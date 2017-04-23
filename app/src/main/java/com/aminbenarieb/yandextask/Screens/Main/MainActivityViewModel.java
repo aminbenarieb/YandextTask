@@ -11,8 +11,12 @@ public interface MainActivityViewModel {
     Dynamic<String> mResultLanguage = new Dynamic("");
     Dynamic<List<String>> mLanguagesList = new Dynamic( new ArrayList<String>()  );
 
+    interface LoadLanguagersCompetionHandler {
+        void handle(List<String> languagesList, Throwable t);
+    }
+
     void swapLanguages();
-    void loadLanguages();
+    void loadLanguages(final LoadLanguagersCompetionHandler competionHandler);
 
     void setSourceLanguage( String lanuage );
     void setResultLanguage( String lanuage );

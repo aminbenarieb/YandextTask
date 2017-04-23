@@ -10,7 +10,7 @@ import android.util.Log;
 
 import com.aminbenarieb.yandextask.Extensions.ABApplication;
 import com.aminbenarieb.yandextask.Extensions.LanguagesMap;
-import com.aminbenarieb.yandextask.Model.SupportedLanguagesModel;
+import com.aminbenarieb.yandextask.Entity.SupportedLanguagesModel;
 import com.aminbenarieb.yandextask.R;
 
 
@@ -37,10 +37,11 @@ public class ABLanguage extends Service implements Language {
         final ABLanguage self = this;
         downloadSupportedLanguagesModel(new SupportedLanguagesModelCompletionHandler() {
             @Override
-            public void handle(LanguagesMap languagesMap) {
+            public void handle(LanguagesMap languagesMap, Throwable t) {
 
                 if (languagesMap == null) {
-                    completion.handle(null);
+                    completion.handle(null, t);
+                    return;
                 }
 
                 // Caching value
@@ -48,7 +49,7 @@ public class ABLanguage extends Service implements Language {
 
                 // Returning list of languages
                 List<String> languageList = new ArrayList(languagesMap.values());
-                completion.handle(languageList);
+                completion.handle(languageList, t);
             }
         });
     }
@@ -66,7 +67,7 @@ public class ABLanguage extends Service implements Language {
     //region Private
 
     interface SupportedLanguagesModelCompletionHandler {
-        void handle(LanguagesMap languagesMap);
+        void handle(LanguagesMap languagesMap, Throwable t);
     }
 
     private void downloadSupportedLanguagesModel(final SupportedLanguagesModelCompletionHandler completion) {
@@ -90,12 +91,13 @@ public class ABLanguage extends Service implements Language {
                         }
 
                         SupportedLanguagesModel mSupportedLanguagesModel = response.body();
-                        completion.handle(mSupportedLanguagesModel.getLangs());
+                        completion.handle(mSupportedLanguagesModel.getLangs(), null);
                     }
 
                     @Override
                     public void onFailure(Call<SupportedLanguagesModel> call, Throwable t) {
-
+                        Log.d(TAG, "Failed request: " + t.getLocalizedMessage());
+                        completion.handle(null, t);
                     }
                 }
         );

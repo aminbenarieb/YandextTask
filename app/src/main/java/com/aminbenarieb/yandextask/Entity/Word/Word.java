@@ -1,4 +1,4 @@
-package com.aminbenarieb.yandextask.Extensions.Word;
+package com.aminbenarieb.yandextask.Entity.Word;
 
 import android.os.Parcelable;
 

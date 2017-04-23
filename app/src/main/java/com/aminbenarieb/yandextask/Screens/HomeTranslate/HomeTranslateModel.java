@@ -5,8 +5,9 @@ import java.util.List;
 
 public interface HomeTranslateModel {
     interface TranslateWordCompletionHandler {
-        void handle(String translatedWord);
+        void handle(String translatedWord, Throwable t);
     }
-    void translateWord(String word, String resultLanguage,
-                              final TranslateWordCompletionHandler completionHandler);
+    void translateWord(final String word,
+                       final String resultLanguage,
+                       final TranslateWordCompletionHandler completionHandler);
 }

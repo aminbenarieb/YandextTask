@@ -1,21 +1,34 @@
-package com.aminbenarieb.yandextask.Extensions.Word;
+package com.aminbenarieb.yandextask.Entity.Word;
 
 import android.os.Parcel;
 
 import android.os.Parcelable;
 
-/**
- * Created by aminbenarieb on 4/6/17.
- */
+import java.util.Date;
 
-public class ABWord implements Word {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
+public class ABWord extends RealmObject implements Word {
+
+    //@PrimaryKey
+    //private long id;
     private String source;
     private String result;
+    private Boolean isFavorite;
+    private Date dateCreated;
 
+    public ABWord() {
+        this.source = "";
+        this.result = "";
+        this.isFavorite = false;
+        this.dateCreated = new Date();
+    }
     public ABWord(String source, String result){
         this.source = source;
         this.result = result;
+        this.isFavorite = false;
+        this.dateCreated = new Date();
     }
 
     //Getters
@@ -24,6 +37,14 @@ public class ABWord implements Word {
     }
     public String getResult() {
         return result;
+    }
+    public Boolean getFavorite() {
+        return isFavorite;
+    }
+
+    //Setters
+    public void setFavorite(Boolean favorite) {
+        isFavorite = favorite;
     }
 
     //region Parcelable subroutines

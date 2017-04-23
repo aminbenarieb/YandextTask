@@ -1,13 +1,20 @@
 package com.aminbenarieb.yandextask.Screens.HomeTranslate;
 
 
-import com.aminbenarieb.yandextask.Extensions.Dynamic;
+import android.support.annotation.NonNull;
 
+import com.aminbenarieb.yandextask.Extensions.Dynamic;
 
 public interface HomeTranslateViewModel {
 
     Dynamic<String> mTranslatedWord = new Dynamic("");
 
-    void translateWord(String word, String resultLanguage);
+    interface HomeTranslateCompetionHandler {
+        void handle(Throwable t);
+    }
+
+    void translateWord(@NonNull String word,
+                       @NonNull String resultLanguage,
+                       final @NonNull HomeTranslateCompetionHandler competionHandler);
 
 }

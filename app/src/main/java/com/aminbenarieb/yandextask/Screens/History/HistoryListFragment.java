@@ -9,8 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
 
-import com.aminbenarieb.yandextask.Extensions.Word.*;
+import com.aminbenarieb.yandextask.Entity.Word.*;
 import com.aminbenarieb.yandextask.R;
+import com.aminbenarieb.yandextask.Services.Repository.ABRepository;
+import com.aminbenarieb.yandextask.Services.Repository.ABRepositoryResponse;
+import com.aminbenarieb.yandextask.Services.Repository.Repository;
+import com.aminbenarieb.yandextask.Services.Repository.RepositoryResponse;
+
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -21,7 +29,6 @@ public class HistoryListFragment extends Fragment {
     private static final String TAG = "RecyclerViewFragment";
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
     private static final int SPAN_COUNT = 2;
-    private static final int DATASET_COUNT = 10;
 
     private enum LayoutManagerType {
         GRID_LAYOUT_MANAGER,
@@ -33,15 +40,13 @@ public class HistoryListFragment extends Fragment {
     protected RecyclerView mRecyclerView;
     protected HistoryRecyclerViewAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
-    protected Word[] mDataset;
+    private Repository mRepository;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Initialize dataset, this data would usually come from a local content provider or
-        // remote server.
-        initDataset();
+        mRepository = new ABRepository(getActivity());
     }
 
     @Override
@@ -66,9 +71,13 @@ public class HistoryListFragment extends Fragment {
         }
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
 
-        mAdapter = new HistoryRecyclerViewAdapter(mDataset);
+        mAdapter = new HistoryRecyclerViewAdapter(new ArrayList<Word>());
         // Set HistoryRecyclerViewAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
+
+        // Initialize dataset, this data would usually come from a local content provider or
+        // remote server.
+        initDataset();
 
         return rootView;
     }
@@ -117,10 +126,13 @@ public class HistoryListFragment extends Fragment {
      * from a local content provider or remote server.
      */
     private void initDataset() {
-        mDataset = new ABWord[DATASET_COUNT];
-        for (int i = 0; i < DATASET_COUNT; i++) {
-            mDataset[i] = new ABWord("Source #" + i, "Translate #" + i);
-        }
+        this.mRepository.getHistoryWords(new Repository.RepositoryCompletionHandler() {
+            @Override
+            public void handle(RepositoryResponse response) {
+                List<Word> mDataset = ((ABRepositoryResponse)response).getWords();
+                mAdapter.updateDataset(mDataset);
+            }
+        });
     }
 
 }

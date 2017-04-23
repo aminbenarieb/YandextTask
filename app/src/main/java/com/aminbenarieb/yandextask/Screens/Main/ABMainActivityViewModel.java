@@ -1,6 +1,8 @@
 package com.aminbenarieb.yandextask.Screens.Main;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -21,13 +23,26 @@ public class ABMainActivityViewModel implements MainActivityViewModel {
         mSourceLanguage.setValue(resultLang);
         mResultLanguage.setValue(sourceLang);
     }
-    public void loadLanguages() {
+    public void loadLanguages(final LoadLanguagersCompetionHandler competionHandler) {
         model.loadLanguages(new MainActivityModel.LanguageListCompletionHandler() {
             @Override
-            public void handle(List<String> languageList) {
+            public void handle(List<String> languageList, Throwable t) {
+                if (t != null) {
+                    competionHandler.handle(null, t);
+                    return;
+                }
+
+                Collections.sort(languageList, new Comparator<String>() {
+                    @Override
+                    public int compare(String s1, String s2) {
+                        return s1.compareToIgnoreCase(s2);
+                    }
+                });
+
+                competionHandler.handle(languageList, t);
                 mLanguagesList.setValue(languageList);
-                mSourceLanguage.setValue( languageList.get(0) );
-                mResultLanguage.setValue( languageList.get(1) );
+                mSourceLanguage.setValue( "Russian" );
+                mResultLanguage.setValue( "English" );
             }
         });
     }

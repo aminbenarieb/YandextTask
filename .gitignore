@@ -115,3 +115,6 @@ app/gradle/wrapper/gradle-wrapper.properties
 .idea/libraries/okhttp_3_3_1.xml
 .idea/libraries/okio_1_8_0.xml
 .idea/libraries/retrofit_2_1_0.xml
+.idea/libraries/realm_android_library_3_1_2.xml
+.idea/libraries/realm_annotations_3_1_2.xml
+.idea/libraries/relinker_1_2_2.xml

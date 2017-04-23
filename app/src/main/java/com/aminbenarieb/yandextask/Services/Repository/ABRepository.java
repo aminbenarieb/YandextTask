@@ -50,6 +50,25 @@ public class ABRepository implements Repository  {
     @Override
     public void toggleFavoriteWord(final @NonNull RepositoryRequest request,
                                    final @NonNull RepositoryCompletionHandler completion) {
+        final ABWord word = (ABWord)((ABRepositoryRequest)request).word;
+
+        realm = Realm.getDefaultInstance();
+        realm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm bgRealm) {
+                word.setFavorite( !word.getFavorite() );
+            }
+        }, new Realm.Transaction.OnSuccess() {
+            @Override
+            public void onSuccess() {
+                completion.handle( new ABRepositoryResponse(null, true, null) );
+            }
+        }, new Realm.Transaction.OnError() {
+            @Override
+            public void onError(Throwable error) {
+                completion.handle( new ABRepositoryResponse(null, false, error) );
+            }
+        });
     }
 
     public void removeWord(final @NonNull RepositoryRequest request,

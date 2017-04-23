@@ -16,11 +16,12 @@
 
 package com.aminbenarieb.yandextask.Screens.History;
 
-import android.util.Log;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.aminbenarieb.yandextask.Entity.Word.*;
@@ -29,25 +30,66 @@ import com.aminbenarieb.yandextask.R;
 import java.util.List;
 
 
-public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecyclerViewAdapter.ViewHolder> {
+public class HistoryRecyclerViewAdapter
+        extends RecyclerView.Adapter<HistoryRecyclerViewAdapter.ViewHolder>
+        implements  HistoryViewHolderDelegate {
     private static final String TAG = "HRViewAdapter";
-    private List<Word> mDataSet;
+    private List<WordInfo> mDataSet;
+    private HistoryAdapterDelegate delegate;
+    private ItemTouchHelper mTouchHelper = new ItemTouchHelper(
+            new ItemTouchHelper.SimpleCallback(
+                    0,
+                    ItemTouchHelper.LEFT) {
+
+                @Override
+                public boolean onMove(RecyclerView recyclerView,
+                                      RecyclerView.ViewHolder viewHolder,
+                                      RecyclerView.ViewHolder target) {
+                    return false;
+                }
+
+                @Override
+                public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                    int row = viewHolder.getAdapterPosition();
+                    WordInfo word = mDataSet.get(row);
+                    mDataSet.remove(row);
+                    delegate.didDeleteWord(word);
+                }
+            }
+    );
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView txtViewSource;
         private final TextView txtViewResult;
+        private final ImageButton btnBookmark;
+        private  HistoryViewHolderDelegate delegate;
 
-        public ViewHolder(View v) {
+        private final View.OnClickListener btnAddBookmarkListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                delegate.didTapBookmarkOnRow( getAdapterPosition() );
+
+            }
+        };
+        private final View.OnClickListener btnHistoryListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                delegate.didTapOnRow( getAdapterPosition() );
+
+            }
+        };
+        public ViewHolder(View v, HistoryViewHolderDelegate delegate) {
             super(v);
 
-            v.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d(TAG, "Element " + getAdapterPosition() + " clicked.");
-                }
-            });
+            this.delegate = delegate;
+
             txtViewSource = (TextView) v.findViewById(R.id.text_source);
             txtViewResult = (TextView) v.findViewById(R.id.text_result);
+            btnBookmark = (ImageButton) v.findViewById(R.id.add_to_bookmarks);
+
+            v.setOnClickListener( btnHistoryListener );
+            btnBookmark.setOnClickListener( btnAddBookmarkListener );
+
         }
 
         public TextView getTextViewSource() {
@@ -56,32 +98,42 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
         public TextView getTextViewResult() {
             return txtViewResult;
         }
+        public ImageButton getButtonBookmark() {
+            return btnBookmark;
+        }
     }
 
-    /**
-     * Initialize the dataset of the LanguageChoose.
-     *
-     * @param dataSet List<Word> containing the data to populate views to be used by RecyclerView.
-     */
-    public HistoryRecyclerViewAdapter(List<Word> dataSet) {
+    public ItemTouchHelper getTouchHelper() {
+        return this.mTouchHelper;
+    }
+
+    //region Constructor
+    public HistoryRecyclerViewAdapter(List<WordInfo> dataSet, HistoryAdapterDelegate delegate) {
         mDataSet = dataSet;
+        this.delegate = delegate;
     }
 
+    //endregion
+
+    // region Adapter subroutines
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View v = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.bookmark_row, viewGroup, false);
 
-        return new ViewHolder(v);
+        return new ViewHolder(v, this);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        Log.d(TAG, "Element " + position + " set.");
 
-        Word word = mDataSet.get(position);
+        WordInfo word = mDataSet.get(position);
         viewHolder.getTextViewSource().setText(word.getSource());
         viewHolder.getTextViewResult().setText(word.getResult());
+
+        int bookmarkIcon = word.getFavorite() ? R.drawable.bookmark : R.drawable.bookmark_border;
+        viewHolder.getButtonBookmark().setImageResource( bookmarkIcon );
+
     }
 
     @Override
@@ -89,13 +141,37 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
         return mDataSet.size();
     }
 
+    //endregion
+
     //region DataSet
 
-    public void updateDataset(List<Word> dataset) {
+    public void updateDataset(List<WordInfo> dataset) {
         mDataSet.clear();
         mDataSet.addAll( dataset );
         this.notifyDataSetChanged();
     }
 
+    public List<WordInfo> getDataSet() {
+        return mDataSet;
+    }
+
     //endregion
+
+    //region View Holder Events
+    @Override
+    public void didTapOnRow(int row) {
+        WordInfo word = mDataSet.get(row);
+        delegate.didTapOnWord(word);
+    }
+    @Override
+    public void didTapBookmarkOnRow(int row) {
+        WordInfo wordInfo = mDataSet.get(row);
+        wordInfo.setFavorite( !wordInfo.getFavorite() );
+        this.notifyItemChanged(row);
+        delegate.didToggleWordFavorite( wordInfo );
+    }
+
+    //endregion
+
+
 }

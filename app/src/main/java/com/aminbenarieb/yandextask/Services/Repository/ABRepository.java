@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.aminbenarieb.yandextask.Entity.Word.ABWord;
-import com.aminbenarieb.yandextask.Entity.Word.Word;
+import com.aminbenarieb.yandextask.Entity.Word.WordInfo;
 
 import java.util.ArrayList;
 
@@ -15,23 +15,49 @@ import io.realm.Sort;
 public class ABRepository implements Repository  {
 
     private Realm realm;
-    private Context context;
 
     public ABRepository(Context context) {
-        this.context = context;
         Realm.init(context);
     }
 
     public void addWord(final @NonNull RepositoryRequest request,
                         final @NonNull RepositoryCompletionHandler completion) {
-        final ABWord word = (ABWord)((ABRepositoryRequest)request).word;
+        final WordInfo wordInfo = ((ABRepositoryRequest)request).word;
 
         realm = Realm.getDefaultInstance();
         realm.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm bgRealm) {
-                ABWord copyWord = new ABWord("Test", "Тест");
+                ABWord word = new ABWord(
+                        getNextKey(bgRealm),
+                        wordInfo.getSource(),
+                        wordInfo.getResult());
                 bgRealm.copyToRealm(word);
+            }
+        }, new Realm.Transaction.OnSuccess() {
+            @Override
+            public void onSuccess() {
+                completion.handle( new ABRepositoryResponse(null, true, null) );
+            }
+        }, new Realm.Transaction.OnError() {
+            @Override
+            public void onError(Throwable error) {
+                completion.handle( new ABRepositoryResponse(null, false, error) );
+            }
+        });
+    }
+
+    @Override
+    public void toggleFavoriteWord(final @NonNull RepositoryRequest request,
+                                   final @NonNull RepositoryCompletionHandler completion) {
+        final WordInfo wordInfo = ((ABRepositoryRequest)request).word;
+
+        realm = Realm.getDefaultInstance();
+        realm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm bgRealm) {
+                ABWord word = bgRealm.where(ABWord.class).equalTo("id", wordInfo.getId()).findFirst();
+                word.setFavorite( !word.getFavorite() );
             }
         }, new Realm.Transaction.OnSuccess() {
             @Override
@@ -48,12 +74,13 @@ public class ABRepository implements Repository  {
 
     public void removeWord(final @NonNull RepositoryRequest request,
                            final @NonNull RepositoryCompletionHandler completion) {
-        final Word word = ((ABRepositoryRequest)request).word;
+        final WordInfo wordInfo = ((ABRepositoryRequest)request).word;
 
         realm.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm bgRealm) {
-                ((ABWord)word).deleteFromRealm();
+                ABWord word = bgRealm.where(ABWord.class).equalTo("id", wordInfo.getId()).findFirst();
+                word.deleteFromRealm();
             }
         }, new Realm.Transaction.OnSuccess() {
             @Override
@@ -70,17 +97,45 @@ public class ABRepository implements Repository  {
 
     public void getHistoryWords(final @NonNull RepositoryCompletionHandler completion) {
         realm = Realm.getDefaultInstance();
-        ArrayList<Word> wordList = new ArrayList<Word>(realm.where(ABWord.class)
+        ArrayList<ABWord> wordList = new ArrayList<>(realm.where(ABWord.class)
                 .findAllSorted("dateCreated", Sort.DESCENDING));
-        completion.handle( new ABRepositoryResponse(wordList, true, null) );
+
+
+        ArrayList<WordInfo> wordInfoArrayList = new ArrayList<>();
+        for (ABWord realmWord : wordList) {
+            wordInfoArrayList.add( new WordInfo(
+                    realmWord.getId(),
+                    realmWord.getSource(),
+                    realmWord.getResult(),
+                    realmWord.getDateCreated(),
+                    realmWord.getFavorite()
+                    )
+            );
+        }
+
+        completion.handle( new ABRepositoryResponse(wordInfoArrayList, true, null) );
     }
 
-    public void getFavoriteHistoryWords(final @NonNull RepositoryCompletionHandler handler) {
-        ArrayList<Word> wordList = new ArrayList<Word>(realm
+    public void getFavoriteHistoryWords(final @NonNull RepositoryCompletionHandler completion) {
+        realm = Realm.getDefaultInstance();
+        ArrayList<ABWord> wordList = new ArrayList<>(realm
                 .where(ABWord.class)
                 .equalTo("isFavorite", true)
-                .findAll());
-        handler.handle( new ABRepositoryResponse(wordList, false, null) );
+                .findAllSorted("dateCreated", Sort.DESCENDING));
+
+        ArrayList<WordInfo> wordInfoArrayList = new ArrayList<>();
+        for (ABWord realmWord : wordList) {
+            wordInfoArrayList.add( new WordInfo(
+                            realmWord.getId(),
+                            realmWord.getSource(),
+                            realmWord.getResult(),
+                            realmWord.getDateCreated(),
+                            realmWord.getFavorite()
+                    )
+            );
+        }
+
+        completion.handle( new ABRepositoryResponse(wordInfoArrayList, true, null) );
     }
 
     public void cleanHistory(final @NonNull RepositoryCompletionHandler completion) {
@@ -103,5 +158,14 @@ public class ABRepository implements Repository  {
         });
     }
 
+    private int getNextKey(Realm realm)
+    {
+        Number numberId = realm.where(ABWord.class).max("id");
+        if (numberId == null) {
+            return 0;
+        }
+
+        return numberId.intValue() + 1;
+    }
 
 }

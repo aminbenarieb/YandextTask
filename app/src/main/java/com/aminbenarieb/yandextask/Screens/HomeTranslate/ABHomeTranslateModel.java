@@ -7,7 +7,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.aminbenarieb.yandextask.Entity.Word.ABWord;
+import com.aminbenarieb.yandextask.Entity.Word.WordInfo;
 import com.aminbenarieb.yandextask.Extensions.ABApplication;
 import com.aminbenarieb.yandextask.Entity.TranslatedWordModel;
 import com.aminbenarieb.yandextask.R;
@@ -15,7 +15,6 @@ import com.aminbenarieb.yandextask.Services.Language.Language;
 import com.aminbenarieb.yandextask.Services.Repository.ABRepositoryRequest;
 import com.aminbenarieb.yandextask.Services.Repository.ABRepositoryResponse;
 import com.aminbenarieb.yandextask.Services.Repository.Repository;
-import com.aminbenarieb.yandextask.Services.Repository.RepositoryRequest;
 import com.aminbenarieb.yandextask.Services.Repository.RepositoryResponse;
 
 
@@ -68,8 +67,8 @@ public class ABHomeTranslateModel extends Service implements HomeTranslateModel 
                         String translatedWords = response.body().getText().toString();
                         String translatedWord = translatedWords.substring(1,  translatedWords.length() - 1);
 
-                        ABWord word = new ABWord(sourceWord, translatedWord);
-                        mRepository.addWord(new ABRepositoryRequest(word),
+                        WordInfo wordInfo = new WordInfo(sourceWord, translatedWord);
+                        mRepository.addWord(new ABRepositoryRequest(wordInfo),
                                 new Repository.RepositoryCompletionHandler() {
                             @Override
                             public void handle(RepositoryResponse response) {

@@ -8,12 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
+import android.widget.Toast;
 
 import com.aminbenarieb.yandextask.Entity.Word.*;
 import com.aminbenarieb.yandextask.R;
 import com.aminbenarieb.yandextask.Services.Repository.ABRepository;
+import com.aminbenarieb.yandextask.Services.Repository.ABRepositoryRequest;
 import com.aminbenarieb.yandextask.Services.Repository.ABRepositoryResponse;
 import com.aminbenarieb.yandextask.Services.Repository.Repository;
+import com.aminbenarieb.yandextask.Services.Repository.RepositoryRequest;
 import com.aminbenarieb.yandextask.Services.Repository.RepositoryResponse;
 
 import java.sql.Array;
@@ -25,7 +28,7 @@ import java.util.List;
  * Created by aminbenarieb on 4/7/17.
  */
 
-public class HistoryListFragment extends Fragment {
+public class HistoryListFragment extends Fragment implements HistoryAdapterDelegate {
     private static final String TAG = "RecyclerViewFragment";
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
     private static final int SPAN_COUNT = 2;
@@ -41,6 +44,8 @@ public class HistoryListFragment extends Fragment {
     protected HistoryRecyclerViewAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
     private Repository mRepository;
+
+    //region Fragment
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,14 +70,12 @@ public class HistoryListFragment extends Fragment {
         mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
 
         if (savedInstanceState != null) {
-            // Restore saved layout manager type.
             mCurrentLayoutManagerType = (LayoutManagerType) savedInstanceState
                     .getSerializable(KEY_LAYOUT_MANAGER);
         }
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
 
-        mAdapter = new HistoryRecyclerViewAdapter(new ArrayList<Word>());
-        // Set HistoryRecyclerViewAdapter as the adapter for RecyclerView.
+        mAdapter = new HistoryRecyclerViewAdapter(new ArrayList<Word>(), this);
         mRecyclerView.setAdapter(mAdapter);
 
         // Initialize dataset, this data would usually come from a local content provider or
@@ -82,11 +85,6 @@ public class HistoryListFragment extends Fragment {
         return rootView;
     }
 
-    /**
-     * Set RecyclerView's LayoutManager to the one given.
-     *
-     * @param layoutManagerType Type of layout manager to switch to.
-     */
     public void setRecyclerViewLayoutManager(LayoutManagerType layoutManagerType) {
         int scrollPosition = 0;
 
@@ -121,10 +119,52 @@ public class HistoryListFragment extends Fragment {
         super.onSaveInstanceState(savedInstanceState);
     }
 
-    /**
-     * Generates Strings for RecyclerView's adapter. This data would usually come
-     * from a local content provider or remote server.
-     */
+    //endregion
+
+    //region HistoryAdapterDelegate
+
+    @Override
+    public void didTapOnWord(Word word) {
+
+    }
+
+    @Override
+    public void didDeleteWord(Word word) {
+        mRepository.removeWord(new ABRepositoryRequest(word),
+                new Repository.RepositoryCompletionHandler() {
+                    @Override
+                    public void handle(RepositoryResponse response) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void didToggleWordFavorite(Word word) {
+        mRepository.toggleFavoriteWord(new ABRepositoryRequest(word),
+                new Repository.RepositoryCompletionHandler() {
+                    @Override
+                    public void handle(RepositoryResponse response) {
+                        Throwable t = ((ABRepositoryResponse)response).getError();
+                        if (t != null) {
+                            Toast.makeText(getActivity(),
+                                    t.getLocalizedMessage(),
+                                    Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        mAdapter.notifyDataSetChanged();
+                    }
+                });
+    }
+
+    @Override
+    public void didClearHistory() {
+
+    }
+
+    //endregion
+
     private void initDataset() {
         this.mRepository.getHistoryWords(new Repository.RepositoryCompletionHandler() {
             @Override

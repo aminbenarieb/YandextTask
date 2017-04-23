@@ -46,6 +46,11 @@ public class ABRepository implements Repository  {
         });
     }
 
+    @Override
+    public void toggleFavoriteWord(final @NonNull RepositoryRequest request,
+                                   final @NonNull RepositoryCompletionHandler completion) {
+    }
+
     public void removeWord(final @NonNull RepositoryRequest request,
                            final @NonNull RepositoryCompletionHandler completion) {
         final Word word = ((ABRepositoryRequest)request).word;

@@ -11,6 +11,9 @@ public interface Repository {
 
     void addWord(final @NonNull RepositoryRequest request, final @NonNull RepositoryCompletionHandler completion);
 
+    void toggleFavoriteWord(final @NonNull RepositoryRequest request,
+                            final @NonNull RepositoryCompletionHandler completion);
+
     void removeWord(final @NonNull RepositoryRequest request, final @NonNull RepositoryCompletionHandler completion);
 
     void getHistoryWords(final @NonNull RepositoryCompletionHandler handler);

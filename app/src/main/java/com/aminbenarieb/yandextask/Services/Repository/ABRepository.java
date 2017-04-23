@@ -68,6 +68,7 @@ public class ABRepository implements Repository  {
     }
 
     public void getHistoryWords(final @NonNull RepositoryCompletionHandler completion) {
+        realm = Realm.getDefaultInstance();
         ArrayList<Word> wordList = new ArrayList<Word>(realm.where(ABWord.class).findAll());
         completion.handle( new ABRepositoryResponse(wordList, true, null) );
     }

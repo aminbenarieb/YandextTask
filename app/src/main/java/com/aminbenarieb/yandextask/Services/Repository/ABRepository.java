@@ -139,10 +139,11 @@ public class ABRepository implements Repository  {
     }
 
     public void cleanHistory(final @NonNull RepositoryCompletionHandler completion) {
-        final RealmResults<ABWord> wordResults = realm.where(ABWord.class).findAll();
+
         realm.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm bgRealm) {
+                final RealmResults<ABWord> wordResults = bgRealm.where(ABWord.class).findAll();
                 wordResults.deleteAllFromRealm();
             }
         }, new Realm.Transaction.OnSuccess() {

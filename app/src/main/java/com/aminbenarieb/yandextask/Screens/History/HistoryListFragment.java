@@ -160,31 +160,71 @@ public class HistoryListFragment extends Fragment implements HistoryAdapterDeleg
                 });
     }
 
-    @Override
-    public void didClearHistory() {
+    //endregion
 
+    //region Public
+
+    public void didTapOnHistoryPage() {
+        showHistory();
+    }
+
+    public void didTapOnBookmarksPage() {
+        showBookmarks();
+    }
+
+    public void didTapOnCleanHistoryButton() {
+        cleanHistory();
     }
 
     //endregion
 
-    //region HistoryView
+    //region Private
 
-    public void showHistory() {
+    private void showHistory() {
         this.mRepository.getHistoryWords(new Repository.RepositoryCompletionHandler() {
             @Override
             public void handle(RepositoryResponse response) {
+                Throwable t =  ((ABRepositoryResponse)response).getError();
+                if (t != null) {
+                    String msg = t.getLocalizedMessage();
+                    Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 List<WordInfo> mDataset = ((ABRepositoryResponse)response).getWords();
                 mAdapter.updateDataset(mDataset);
             }
         });
     }
 
-    public void showBookmarks() {
+    private void showBookmarks() {
         this.mRepository.getFavoriteHistoryWords(new Repository.RepositoryCompletionHandler() {
             @Override
             public void handle(RepositoryResponse response) {
+                Throwable t =  ((ABRepositoryResponse)response).getError();
+                if (t != null) {
+                    String msg = t.getLocalizedMessage();
+                    Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 List<WordInfo> mDataset = ((ABRepositoryResponse)response).getWords();
                 mAdapter.updateDataset(mDataset);
+            }
+        });
+    }
+
+    private void cleanHistory() {
+        this.mRepository.cleanHistory(new Repository.RepositoryCompletionHandler() {
+            @Override
+            public void handle(RepositoryResponse response) {
+                Throwable t =  ((ABRepositoryResponse)response).getError();
+                if (t != null) {
+                    String msg = t.getLocalizedMessage();
+                    Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                mAdapter.clearDataset();
             }
         });
     }

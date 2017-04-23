@@ -153,6 +153,12 @@ public class HistoryRecyclerViewAdapter
         this.notifyDataSetChanged();
     }
 
+    public void clearDataset() {
+        mDataSet.clear();
+        this.notifyDataSetChanged();
+        this.notifyItemRangeRemoved(0, getItemCount());
+    }
+
     public List<WordInfo> getDataSet() {
         return mDataSet;
     }

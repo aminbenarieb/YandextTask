@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private BottomNavigationView bottomNavigation;
     private ActionBar actionBar;
+    private int mLanguageSwitcher = R.layout.view_language_chooser;
+    private int mTabPager = R.layout.view_history_bookmarks_tab;
 
     private FragmentManager fragmentManager;
     private MainActivityViewModel viewModel = new ABMainActivityViewModel(
@@ -68,16 +70,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setupActionBar();
         setupFragments();
         setupLanguageSwitcher();
-        setupButtonLanguages();
-        setupListeners();
-        setupBinding();
 
         // Setup context
         ABLanguage.INSTANCE.setContext(MainActivity.this);
 
         // Initial fragment
         setContentFragment((Fragment) mHomeTranslateFragment);
-
 
         // Load languages
         viewModel.loadLanguages(new MainActivityViewModel.LoadLanguagersCompetionHandler() {
@@ -150,43 +148,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setupLanguageSwitcher() {
-        actionBar.setCustomView(R.layout.view_language_chooser);
+        actionBar.setCustomView(mLanguageSwitcher);
+        setupButtonLanguages();
+        setupButtonLanguagesBinding();
+        setupButtonLanguagesListeners();
     }
 
-    private void setupTabPager() {
-        actionBar.setCustomView(R.layout.view_history_bookmarks_tab);
-
-        View v = actionBar.getCustomView();
-        final TabLayout tabLayout = (TabLayout)v.findViewById(R.id.tabLayout);
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.title_history));
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.title_bookmarks));
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-
-             @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-
-                Log.i("TAG", "onTabReselected: " + tab.getPosition());
-
-                switch (tabLayout.getSelectedTabPosition()) {
-                    case 0:
-                        break;
-                    case 1:
-                        break;
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-
-    }
 
     private void setupButtonLanguages() {
         mButtonChooseSourceLanguage = (Button) findViewById(R.id.source_language);
@@ -194,13 +161,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mButtonChooseResultLanguage = (Button) findViewById(R.id.result_language);
     }
 
-    private void setupListeners() {
+    private void setupButtonLanguagesListeners() {
         mButtonSwapLanguages.setOnClickListener(this);
         mButtonChooseSourceLanguage.setOnClickListener(this);
         mButtonChooseResultLanguage.setOnClickListener(this);
     }
 
-    private void setupBinding() {
+    private void setupButtonLanguagesBinding() {
         viewModel.mLanguagesList.bindAndFire(new Dynamic.Listener() {
             @Override
             public void onResponse(Object value) {
@@ -225,6 +192,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+
+
+    private void setupTabPager() {
+        actionBar.setCustomView(mTabPager);
+
+        View v = actionBar.getCustomView();
+        final TabLayout tabLayout = (TabLayout)v.findViewById(R.id.tabLayout);
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.title_history));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.title_bookmarks));
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+                Log.i("TAG", "onTabReselected: " + tab.getPosition());
+
+                switch (tabLayout.getSelectedTabPosition()) {
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+    }
     //endregion
 
     //region Actions

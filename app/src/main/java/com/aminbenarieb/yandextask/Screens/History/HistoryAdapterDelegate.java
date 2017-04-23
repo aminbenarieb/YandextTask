@@ -7,5 +7,4 @@ public interface HistoryAdapterDelegate {
     void didTapOnWord(WordInfo word);
     void didToggleWordFavorite(WordInfo word);
     void didDeleteWord(WordInfo word);
-    void didClearHistory();
 }

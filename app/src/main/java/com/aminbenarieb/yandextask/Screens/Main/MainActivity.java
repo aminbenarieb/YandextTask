@@ -1,13 +1,19 @@
 package com.aminbenarieb.yandextask.Screens.Main;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.support.v4.app.Fragment;
@@ -36,13 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ActionBar actionBar;
     private int mLanguageSwitcher = R.layout.view_language_chooser;
     private int mTabPager = R.layout.view_history_bookmarks_tab;
-
     private FragmentManager fragmentManager;
-    private MainActivityViewModel viewModel = new ABMainActivityViewModel(
-            new ABMainActivityModel(
-                    ABLanguage.INSTANCE
-            )
-    );
 
     private HistoryListFragment mBookmarksFragment;
     private HomeTranslateFragment mHomeTranslateFragment;
@@ -52,6 +52,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button mButtonChooseSourceLanguage;
     private Button mButtonChooseResultLanguage;
 
+    private MainActivityViewModel viewModel = new ABMainActivityViewModel(
+            new ABMainActivityModel(
+                    ABLanguage.INSTANCE
+            )
+    );
+    private Boolean schouldShowClearHistoryButton = false;
 
     //region LanguageChooseActivity Lifecycle
 
@@ -108,10 +114,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             switch (id) {
                 case R.id.navigation_home:
                     setupLanguageSwitcher();
+                    hideHistoryCleanButton();
                     fragment = (Fragment)mHomeTranslateFragment;
                     break;
                 case R.id.navigation_dashboard:
                     setupTabPager();
+                    showHistoryCleanButton();
                     fragment = mBookmarksFragment;
                     break;
             }
@@ -129,6 +137,50 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     //endregion
+
+    //region History Menu
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (schouldShowClearHistoryButton) {
+
+
+            Drawable icon = ContextCompat.getDrawable(this, R.drawable.delete);
+            icon.setTint(Color.WHITE);
+            menu.add(0, 0, 0, R.string.history_clear).setIcon(icon)
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
+        }
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int selectedItem = item.getItemId();
+
+        switch (selectedItem) {
+            case 0:
+                mBookmarksFragment.didTapOnCleanHistoryButton();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void hideHistoryCleanButton() {
+        updateHistoryCleanButtonState(false);
+    }
+    private void showHistoryCleanButton() {
+        updateHistoryCleanButtonState(true);
+    }
+    private void updateHistoryCleanButtonState(Boolean schouldShow) {
+        schouldShowClearHistoryButton = schouldShow;
+        invalidateOptionsMenu();
+    }
+
+    //
 
     //region Setup subroutines
 
@@ -208,10 +260,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 switch (tabLayout.getSelectedTabPosition()) {
                     case 0:
-                        mBookmarksFragment.showHistory();
+                        mBookmarksFragment.didTapOnHistoryPage();
                         break;
                     case 1:
-                        mBookmarksFragment.showBookmarks();
+                        mBookmarksFragment.didTapOnBookmarksPage();
                         break;
                 }
             }

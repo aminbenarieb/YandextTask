@@ -17,6 +17,7 @@
 package com.aminbenarieb.yandextask.Screens.History;
 
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,27 @@ public class HistoryRecyclerViewAdapter
     private static final String TAG = "HRViewAdapter";
     private List<WordInfo> mDataSet;
     private HistoryAdapterDelegate delegate;
+    private ItemTouchHelper mTouchHelper = new ItemTouchHelper(
+            new ItemTouchHelper.SimpleCallback(
+                    0,
+                    ItemTouchHelper.LEFT) {
+
+                @Override
+                public boolean onMove(RecyclerView recyclerView,
+                                      RecyclerView.ViewHolder viewHolder,
+                                      RecyclerView.ViewHolder target) {
+                    return false;
+                }
+
+                @Override
+                public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                    int row = viewHolder.getAdapterPosition();
+                    WordInfo word = mDataSet.get(row);
+                    mDataSet.remove(row);
+                    delegate.didDeleteWord(word);
+                }
+            }
+    );
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView txtViewSource;
@@ -81,11 +103,16 @@ public class HistoryRecyclerViewAdapter
         }
     }
 
+    public ItemTouchHelper getTouchHelper() {
+        return this.mTouchHelper;
+    }
+
     //region Constructor
     public HistoryRecyclerViewAdapter(List<WordInfo> dataSet, HistoryAdapterDelegate delegate) {
         mDataSet = dataSet;
         this.delegate = delegate;
     }
+
     //endregion
 
     // region Adapter subroutines
@@ -124,6 +151,10 @@ public class HistoryRecyclerViewAdapter
         this.notifyDataSetChanged();
     }
 
+    public List<WordInfo> getDataSet() {
+        return mDataSet;
+    }
+
     //endregion
 
     //region View Holder Events
@@ -139,11 +170,7 @@ public class HistoryRecyclerViewAdapter
         this.notifyItemChanged(row);
         delegate.didToggleWordFavorite( wordInfo );
     }
-    @Override
-    public void didSwipeDeleteOnRow(int row) {
-        WordInfo word = mDataSet.get(row);
-        delegate.didDeleteWord(word);
-    }
+
     //endregion
 
 

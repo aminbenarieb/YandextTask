@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,6 +80,9 @@ public class HistoryListFragment extends Fragment implements HistoryAdapterDeleg
         // Initialize dataset, this data would usually come from a local content provider or
         // remote server.
         showHistory();
+
+        // Swipes
+        mAdapter.getTouchHelper().attachToRecyclerView(mRecyclerView);
 
         return rootView;
     }

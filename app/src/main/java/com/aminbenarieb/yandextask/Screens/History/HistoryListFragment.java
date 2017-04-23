@@ -16,10 +16,8 @@ import com.aminbenarieb.yandextask.Services.Repository.ABRepository;
 import com.aminbenarieb.yandextask.Services.Repository.ABRepositoryRequest;
 import com.aminbenarieb.yandextask.Services.Repository.ABRepositoryResponse;
 import com.aminbenarieb.yandextask.Services.Repository.Repository;
-import com.aminbenarieb.yandextask.Services.Repository.RepositoryRequest;
 import com.aminbenarieb.yandextask.Services.Repository.RepositoryResponse;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,7 +73,7 @@ public class HistoryListFragment extends Fragment implements HistoryAdapterDeleg
         }
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
 
-        mAdapter = new HistoryRecyclerViewAdapter(new ArrayList<Word>(), this);
+        mAdapter = new HistoryRecyclerViewAdapter(new ArrayList<WordInfo>(), this);
         mRecyclerView.setAdapter(mAdapter);
 
         // Initialize dataset, this data would usually come from a local content provider or
@@ -124,12 +122,12 @@ public class HistoryListFragment extends Fragment implements HistoryAdapterDeleg
     //region HistoryAdapterDelegate
 
     @Override
-    public void didTapOnWord(Word word) {
+    public void didTapOnWord(WordInfo word) {
 
     }
 
     @Override
-    public void didDeleteWord(Word word) {
+    public void didDeleteWord(WordInfo word) {
         mRepository.removeWord(new ABRepositoryRequest(word),
                 new Repository.RepositoryCompletionHandler() {
                     @Override
@@ -140,7 +138,7 @@ public class HistoryListFragment extends Fragment implements HistoryAdapterDeleg
     }
 
     @Override
-    public void didToggleWordFavorite(Word word) {
+    public void didToggleWordFavorite(WordInfo word) {
         mRepository.toggleFavoriteWord(new ABRepositoryRequest(word),
                 new Repository.RepositoryCompletionHandler() {
                     @Override
@@ -169,7 +167,7 @@ public class HistoryListFragment extends Fragment implements HistoryAdapterDeleg
         this.mRepository.getHistoryWords(new Repository.RepositoryCompletionHandler() {
             @Override
             public void handle(RepositoryResponse response) {
-                List<Word> mDataset = ((ABRepositoryResponse)response).getWords();
+                List<WordInfo> mDataset = ((ABRepositoryResponse)response).getWords();
                 mAdapter.updateDataset(mDataset);
             }
         });

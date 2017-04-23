@@ -33,7 +33,7 @@ public class HistoryRecyclerViewAdapter
         extends RecyclerView.Adapter<HistoryRecyclerViewAdapter.ViewHolder>
         implements  HistoryViewHolderDelegate {
     private static final String TAG = "HRViewAdapter";
-    private List<Word> mDataSet;
+    private List<WordInfo> mDataSet;
     private HistoryAdapterDelegate delegate;
     private ViewHolder viewHolder;
 
@@ -83,7 +83,7 @@ public class HistoryRecyclerViewAdapter
     }
 
     //region Constructor
-    public HistoryRecyclerViewAdapter(List<Word> dataSet, HistoryAdapterDelegate delegate) {
+    public HistoryRecyclerViewAdapter(List<WordInfo> dataSet, HistoryAdapterDelegate delegate) {
         mDataSet = dataSet;
         this.delegate = delegate;
     }
@@ -102,7 +102,7 @@ public class HistoryRecyclerViewAdapter
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         this.viewHolder = viewHolder;
 
-        Word word = mDataSet.get(position);
+        WordInfo word = mDataSet.get(position);
         viewHolder.getTextViewSource().setText(word.getSource());
         viewHolder.getTextViewResult().setText(word.getResult());
 
@@ -120,7 +120,7 @@ public class HistoryRecyclerViewAdapter
 
     //region DataSet
 
-    public void updateDataset(List<Word> dataset) {
+    public void updateDataset(List<WordInfo> dataset) {
         mDataSet.clear();
         mDataSet.addAll( dataset );
         this.notifyDataSetChanged();
@@ -131,17 +131,17 @@ public class HistoryRecyclerViewAdapter
     //region View Holder Events
     @Override
     public void didTapOnRow(int row) {
-        Word word = mDataSet.get(row);
+        WordInfo word = mDataSet.get(row);
         delegate.didTapOnWord(word);
     }
     @Override
     public void didTapBookmarkOnRow(int row) {
-        Word word = mDataSet.get(row);
+        WordInfo word = mDataSet.get(row);
         delegate.didToggleWordFavorite(word);
     }
     @Override
     public void didSwipeDeleteOnRow(int row) {
-        Word word = mDataSet.get(row);
+        WordInfo word = mDataSet.get(row);
         delegate.didDeleteWord(word);
     }
     //endregion

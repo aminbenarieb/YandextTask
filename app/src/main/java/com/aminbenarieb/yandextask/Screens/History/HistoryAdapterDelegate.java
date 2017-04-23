@@ -1,11 +1,11 @@
 package com.aminbenarieb.yandextask.Screens.History;
 
 
-import com.aminbenarieb.yandextask.Entity.Word.Word;
+import com.aminbenarieb.yandextask.Entity.Word.WordInfo;
 
 public interface HistoryAdapterDelegate {
-    void didTapOnWord(Word word);
-    void didToggleWordFavorite(Word word);
-    void didDeleteWord(Word word);
+    void didTapOnWord(WordInfo word);
+    void didToggleWordFavorite(WordInfo word);
+    void didDeleteWord(WordInfo word);
     void didClearHistory();
 }

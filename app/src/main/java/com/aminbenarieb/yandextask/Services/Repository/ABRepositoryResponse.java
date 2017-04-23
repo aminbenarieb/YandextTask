@@ -14,4 +14,14 @@ public class ABRepositoryResponse implements RepositoryResponse {
         this.successed = successed;
         this.error = error;
     }
+
+    public List<Word> getWords() {
+        return this.words;
+    }
+    public Boolean getSuccessed() {
+        return this.successed;
+    }
+    public Throwable getError() {
+        return this.error;
+    }
 }

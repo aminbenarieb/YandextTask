@@ -1,7 +1,7 @@
 package com.aminbenarieb.yandextask.Services.Repository;
 
 
-import com.aminbenarieb.yandextask.Entity.Word.Word;
+import android.support.annotation.NonNull;
 
 public interface Repository {
 
@@ -9,14 +9,14 @@ public interface Repository {
         void handle(RepositoryResponse response);
     }
 
-    void addWord(final RepositoryRequest request, final RepositoryCompletionHandler completion);
+    void addWord(final @NonNull RepositoryRequest request, final @NonNull RepositoryCompletionHandler completion);
 
-    void removeWord(final RepositoryRequest request, final RepositoryCompletionHandler completion);
+    void removeWord(final @NonNull RepositoryRequest request, final @NonNull RepositoryCompletionHandler completion);
 
-    void getHistoryWords(final RepositoryCompletionHandler handler);
+    void getHistoryWords(final @NonNull RepositoryCompletionHandler handler);
 
-    void getFavoriteHistoryWords(final RepositoryCompletionHandler handler);
+    void getFavoriteHistoryWords(final @NonNull RepositoryCompletionHandler handler);
 
-    void cleanHistory(final RepositoryCompletionHandler handler);
+    void cleanHistory(final @NonNull RepositoryCompletionHandler handler);
 
 }

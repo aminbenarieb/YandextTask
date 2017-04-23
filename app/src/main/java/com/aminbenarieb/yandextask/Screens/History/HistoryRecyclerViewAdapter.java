@@ -26,10 +26,12 @@ import android.widget.TextView;
 import com.aminbenarieb.yandextask.Entity.Word.*;
 import com.aminbenarieb.yandextask.R;
 
+import java.util.List;
+
 
 public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecyclerViewAdapter.ViewHolder> {
     private static final String TAG = "HRViewAdapter";
-    private Word[] mDataSet;
+    private List<Word> mDataSet;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView txtViewSource;
@@ -59,9 +61,9 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
     /**
      * Initialize the dataset of the LanguageChoose.
      *
-     * @param dataSet Word[] containing the data to populate views to be used by RecyclerView.
+     * @param dataSet List<Word> containing the data to populate views to be used by RecyclerView.
      */
-    public HistoryRecyclerViewAdapter(Word[] dataSet) {
+    public HistoryRecyclerViewAdapter(List<Word> dataSet) {
         mDataSet = dataSet;
     }
 
@@ -77,13 +79,13 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         Log.d(TAG, "Element " + position + " set.");
 
-        Word word = mDataSet[position];
+        Word word = mDataSet.get(position);
         viewHolder.getTextViewSource().setText(word.getSource());
         viewHolder.getTextViewResult().setText(word.getResult());
     }
 
     @Override
     public int getItemCount() {
-        return mDataSet.length;
+        return mDataSet.size();
     }
 }

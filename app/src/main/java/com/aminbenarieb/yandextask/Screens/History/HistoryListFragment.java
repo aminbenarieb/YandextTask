@@ -17,6 +17,8 @@ import com.aminbenarieb.yandextask.Services.Repository.Repository;
 import com.aminbenarieb.yandextask.Services.Repository.RepositoryResponse;
 
 import java.sql.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -39,7 +41,7 @@ public class HistoryListFragment extends Fragment {
     protected RecyclerView mRecyclerView;
     protected HistoryRecyclerViewAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
-    protected Word[] mDataset;
+    protected List<Word> mDataset = new ArrayList<Word>();
     private Repository mRepository;
 
     @Override
@@ -47,10 +49,6 @@ public class HistoryListFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         mRepository = new ABRepository(getActivity());
-
-        // Initialize dataset, this data would usually come from a local content provider or
-        // remote server.
-        initDataset();
     }
 
     @Override
@@ -78,6 +76,10 @@ public class HistoryListFragment extends Fragment {
         mAdapter = new HistoryRecyclerViewAdapter(mDataset);
         // Set HistoryRecyclerViewAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
+
+        // Initialize dataset, this data would usually come from a local content provider or
+        // remote server.
+        initDataset();
 
         return rootView;
     }
@@ -129,7 +131,7 @@ public class HistoryListFragment extends Fragment {
         this.mRepository.getHistoryWords(new Repository.RepositoryCompletionHandler() {
             @Override
             public void handle(RepositoryResponse response) {
-                mDataset = (Word[])((ABRepositoryResponse)response).getWords().toArray();
+                mDataset = ((ABRepositoryResponse)response).getWords();
             }
         });
     }

@@ -29,7 +29,7 @@ public class ABRepository implements Repository  {
             @Override
             public void execute(Realm bgRealm) {
                 ABWord word = new ABWord(
-                        getNextKey(),
+                        getNextKey(bgRealm),
                         wordInfo.getSource(),
                         wordInfo.getResult());
                 bgRealm.copyToRealm(word);
@@ -158,12 +158,14 @@ public class ABRepository implements Repository  {
         });
     }
 
-    private int getNextKey()
+    private int getNextKey(Realm realm)
     {
-        try {
-            return realm.where(ABWord.class).max("id").intValue() + 1;
-        } catch (ArrayIndexOutOfBoundsException e)
-        { return 0; }
+        Number numberId = realm.where(ABWord.class).max("id");
+        if (numberId == null) {
+            return 0;
+        }
+
+        return numberId.intValue() + 1;
     }
 
 }

@@ -35,7 +35,6 @@ public class HistoryRecyclerViewAdapter
     private static final String TAG = "HRViewAdapter";
     private List<WordInfo> mDataSet;
     private HistoryAdapterDelegate delegate;
-    private ViewHolder viewHolder;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView txtViewSource;
@@ -100,7 +99,6 @@ public class HistoryRecyclerViewAdapter
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        this.viewHolder = viewHolder;
 
         WordInfo word = mDataSet.get(position);
         viewHolder.getTextViewSource().setText(word.getSource());
@@ -136,8 +134,10 @@ public class HistoryRecyclerViewAdapter
     }
     @Override
     public void didTapBookmarkOnRow(int row) {
-        WordInfo word = mDataSet.get(row);
-        delegate.didToggleWordFavorite(word);
+        WordInfo wordInfo = mDataSet.get(row);
+        wordInfo.setFavorite( !wordInfo.getFavorite() );
+        this.notifyItemChanged(row);
+        delegate.didToggleWordFavorite( wordInfo );
     }
     @Override
     public void didSwipeDeleteOnRow(int row) {

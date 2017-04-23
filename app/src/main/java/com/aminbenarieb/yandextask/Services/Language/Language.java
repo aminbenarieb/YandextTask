@@ -12,7 +12,7 @@ import java.util.List;
 public interface Language {
 
     interface LanguageListCompletionHandler {
-        void handle(List<String> languagesList);
+        void handle(List<String> languagesList, Throwable t);
     }
 
     public void loadLanguages(LanguageListCompletionHandler completion);

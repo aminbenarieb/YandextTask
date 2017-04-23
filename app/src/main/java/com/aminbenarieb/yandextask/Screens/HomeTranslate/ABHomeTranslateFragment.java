@@ -12,10 +12,12 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aminbenarieb.yandextask.Extensions.Dynamic;
 import com.aminbenarieb.yandextask.R;
 import com.aminbenarieb.yandextask.Services.Language.ABLanguage;
+import com.aminbenarieb.yandextask.Services.Repository.ABRepository;
 
 /**
  * Created by aminbenarieb on 4/15/17.
@@ -53,6 +55,7 @@ public class ABHomeTranslateFragment extends Fragment implements HomeTranslateFr
         viewModel = new ABHomeTranslateViewModel(
                 new ABHomeTranslateModel(
                         getActivity(),
+                        new ABRepository(getActivity()),
                         ABLanguage.INSTANCE
                 ));
 
@@ -112,7 +115,17 @@ public class ABHomeTranslateFragment extends Fragment implements HomeTranslateFr
     private void onTextChangedAction(String word) {
         //TODO: 1) save to history
         //TODO: 2) toggle hidden of result view
-        viewModel.translateWord(word, mResultLanguage);
+        viewModel.translateWord(word,
+                mResultLanguage,
+                new HomeTranslateViewModel.HomeTranslateCompetionHandler() {
+                    @Override
+                    public void handle(Throwable t) {
+                        if (t != null) {
+                            String msg = t.getLocalizedMessage();
+                            Toast.makeText(getActivity().getBaseContext(), msg, Toast.LENGTH_LONG).show();
+                        }
+                    }
+        });
     }
 
     void showKeyboard() {

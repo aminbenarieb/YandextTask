@@ -21,10 +21,16 @@ public class ABMainActivityViewModel implements MainActivityViewModel {
         mSourceLanguage.setValue(resultLang);
         mResultLanguage.setValue(sourceLang);
     }
-    public void loadLanguages() {
+    public void loadLanguages(final LoadLanguagersCompetionHandler competionHandler) {
         model.loadLanguages(new MainActivityModel.LanguageListCompletionHandler() {
             @Override
-            public void handle(List<String> languageList) {
+            public void handle(List<String> languageList, Throwable t) {
+                if (t != null) {
+                    competionHandler.handle(null, t);
+                    return;
+                }
+
+                competionHandler.handle(languageList, t);
                 mLanguagesList.setValue(languageList);
                 mSourceLanguage.setValue( languageList.get(0) );
                 mResultLanguage.setValue( languageList.get(1) );

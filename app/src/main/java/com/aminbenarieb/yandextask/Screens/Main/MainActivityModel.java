@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface MainActivityModel {
     interface LanguageListCompletionHandler {
-        void handle(List<String> languageList);
+        void handle(List<String> languageList, Throwable t);
     }
 
     void loadLanguages(final MainActivityModel.LanguageListCompletionHandler completion);

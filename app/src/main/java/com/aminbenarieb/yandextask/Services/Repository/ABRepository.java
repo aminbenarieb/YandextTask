@@ -19,16 +19,18 @@ public class ABRepository implements Repository  {
     public ABRepository(Context context) {
         this.context = context;
         Realm.init(context);
-        realm = Realm.getDefaultInstance();
     }
 
     public void addWord(final @NonNull RepositoryRequest request,
                         final @NonNull RepositoryCompletionHandler completion) {
-        final Word word = ((ABRepositoryRequest)request).word;
+        final ABWord word = (ABWord)((ABRepositoryRequest)request).word;
+
+        realm = Realm.getDefaultInstance();
         realm.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm bgRealm) {
-                realm.copyToRealmOrUpdate((ABWord)word);
+                ABWord copyWord = new ABWord("Test", "Тест");
+                bgRealm.copyToRealm(word);
             }
         }, new Realm.Transaction.OnSuccess() {
             @Override

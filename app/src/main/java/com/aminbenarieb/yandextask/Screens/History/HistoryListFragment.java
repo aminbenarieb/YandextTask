@@ -29,7 +29,6 @@ public class HistoryListFragment extends Fragment {
     private static final String TAG = "RecyclerViewFragment";
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
     private static final int SPAN_COUNT = 2;
-    private static final int DATASET_COUNT = 10;
 
     private enum LayoutManagerType {
         GRID_LAYOUT_MANAGER,
@@ -41,7 +40,6 @@ public class HistoryListFragment extends Fragment {
     protected RecyclerView mRecyclerView;
     protected HistoryRecyclerViewAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
-    protected List<Word> mDataset = new ArrayList<Word>();
     private Repository mRepository;
 
     @Override
@@ -73,7 +71,7 @@ public class HistoryListFragment extends Fragment {
         }
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
 
-        mAdapter = new HistoryRecyclerViewAdapter(mDataset);
+        mAdapter = new HistoryRecyclerViewAdapter(new ArrayList<Word>());
         // Set HistoryRecyclerViewAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
 
@@ -131,7 +129,8 @@ public class HistoryListFragment extends Fragment {
         this.mRepository.getHistoryWords(new Repository.RepositoryCompletionHandler() {
             @Override
             public void handle(RepositoryResponse response) {
-                mDataset = ((ABRepositoryResponse)response).getWords();
+                List<Word> mDataset = ((ABRepositoryResponse)response).getWords();
+                mAdapter.updateDataset(mDataset);
             }
         });
     }

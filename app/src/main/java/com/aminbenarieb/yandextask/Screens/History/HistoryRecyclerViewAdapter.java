@@ -88,4 +88,14 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
     public int getItemCount() {
         return mDataSet.size();
     }
+
+    //region DataSet
+
+    public void updateDataset(List<Word> dataset) {
+        mDataSet.clear();
+        mDataSet.addAll( dataset );
+        this.notifyDataSetChanged();
+    }
+
+    //endregion
 }

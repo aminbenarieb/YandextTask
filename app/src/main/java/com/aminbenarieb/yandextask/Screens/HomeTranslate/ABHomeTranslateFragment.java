@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ import java.util.TimerTask;
 public class ABHomeTranslateFragment extends Fragment implements HomeTranslateFragment {
     private View mContent;
     private TextView mSourceEditText;
+    private CardView mResultCardView;
     private TextView mResultEditText;
     private String mResultLanguage;
 
@@ -81,6 +83,7 @@ public class ABHomeTranslateFragment extends Fragment implements HomeTranslateFr
     void setupViews(View view) {
         mContent = view.findViewById(R.id.translate_view);
         mSourceEditText = (EditText) view.findViewById(R.id.translate_source);
+        mResultCardView = (CardView) view.findViewById(R.id.translate_result_card_view);
         mResultEditText = (TextView) view.findViewById(R.id.translate_result);
     }
 

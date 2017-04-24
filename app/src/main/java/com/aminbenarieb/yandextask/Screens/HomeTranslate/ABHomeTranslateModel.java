@@ -41,7 +41,7 @@ public class ABHomeTranslateModel extends Service implements HomeTranslateModel 
     public void translateWord(final String word,
                               final String resultLanguage,
                               final TranslateWordCompletionHandler completionHandler) {
-        if (word == null)
+        if (word == null || resultLanguage == null)
             return;
 
         final String sourceWord = word;

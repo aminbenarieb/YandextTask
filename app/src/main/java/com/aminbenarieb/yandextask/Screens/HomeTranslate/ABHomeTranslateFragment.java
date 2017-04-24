@@ -48,6 +48,10 @@ public class ABHomeTranslateFragment extends Fragment implements HomeTranslateFr
     public HomeTranslateViewModel viewModel;
 
     public void setResultLanguage(String language) {
+        if (language == null) {
+            return;
+        }
+
         this.mResultLanguage = language;
     }
 

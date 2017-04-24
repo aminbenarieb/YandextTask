@@ -29,7 +29,7 @@
         />
 
     <ImageButton
-        android:id="@+id/clear_text_main"
+        android:id="@+id/translate_source_clear"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="30dp"
         android:layout_height="30dp"

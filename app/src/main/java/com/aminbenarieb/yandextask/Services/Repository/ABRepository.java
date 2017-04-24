@@ -28,10 +28,13 @@ public class ABRepository implements Repository  {
         realm.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm bgRealm) {
-                ABWord word = new ABWord(
-                        getNextKey(bgRealm),
-                        wordInfo.getSource(),
-                        wordInfo.getResult());
+                ABWord word = bgRealm.where(ABWord.class).equalTo("source", wordInfo.getSource()).findFirst();
+                if (word == null) {
+                    word = new ABWord(
+                            getNextKey(bgRealm),
+                            wordInfo.getSource(),
+                            wordInfo.getResult());
+                }
                 bgRealm.copyToRealm(word);
             }
         }, new Realm.Transaction.OnSuccess() {
@@ -56,7 +59,7 @@ public class ABRepository implements Repository  {
         realm.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm bgRealm) {
-                ABWord word = bgRealm.where(ABWord.class).equalTo("id", wordInfo.getId()).findFirst();
+                ABWord word = bgRealm.where(ABWord.class).equalTo("source", wordInfo.getSource()).findFirst();
                 word.setFavorite( !word.getFavorite() );
             }
         }, new Realm.Transaction.OnSuccess() {

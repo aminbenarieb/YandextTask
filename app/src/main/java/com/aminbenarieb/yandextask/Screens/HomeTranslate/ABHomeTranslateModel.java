@@ -67,18 +67,18 @@ public class ABHomeTranslateModel extends Service implements HomeTranslateModel 
                         String translatedWords = response.body().getText().toString();
                         String translatedWord = translatedWords.substring(1,  translatedWords.length() - 1);
 
-                        WordInfo wordInfo = new WordInfo(sourceWord, translatedWord);
+                        final WordInfo wordInfo = new WordInfo(sourceWord, translatedWord);
                         mRepository.addWord(new ABRepositoryRequest(wordInfo),
                                 new Repository.RepositoryCompletionHandler() {
                             @Override
                             public void handle(RepositoryResponse response) {
                                 ABRepositoryResponse mResponse = (ABRepositoryResponse)response;
                                 Throwable t = mResponse.getError();
-                                completionHandler.handle(null,t);
+                                completionHandler.handle(wordInfo,t);
                             }
                         });
 
-                        completionHandler.handle(translatedWord, null);
+                        completionHandler.handle(wordInfo, null);
                     }
 
                     @Override
@@ -88,6 +88,20 @@ public class ABHomeTranslateModel extends Service implements HomeTranslateModel 
                     }
                 }
         );
+    }
+
+    @Override
+    public void addWordToBookmarks(WordInfo wordInfo,
+                              final TranslateWordCompletionHandler completionHandler) {
+        mRepository.toggleFavoriteWord(new ABRepositoryRequest(wordInfo),
+                new Repository.RepositoryCompletionHandler() {
+            @Override
+            public void handle(RepositoryResponse response) {
+                ABRepositoryResponse mResponse = (ABRepositoryResponse)response;
+                Throwable t = mResponse.getError();
+                completionHandler.handle(null,t);
+            }
+        });
     }
 
     //endregion
